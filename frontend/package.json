@@ -9,6 +9,11 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "latest",
     "vite": "^8.2.0"
+  },
+  "dependencies": {
+    "react": "latest",
+    "react-dom": "latest"
   }
 }
