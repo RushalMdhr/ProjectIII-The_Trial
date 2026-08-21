@@ -1,12 +1,34 @@
-import SystemStatus from "./components/SystemStatus";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Navbar from "./components/Navbar";
+
+import Home from "./pages/home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import InterviewSetup from "./pages/InterviewSetup";
+import Interview from "./pages/Interview";
+// import Feedback from "./pages/Feedback";
+import Results from "./pages/Results";
 
 function App() {
   return (
-    <div>
-      <h1>Welcome to Project 3</h1>
+    <BrowserRouter>
 
-      <SystemStatus />
-    </div>
+      <Navbar />
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        <Route path="/interview-setup" element={<InterviewSetup />} />
+        <Route path="/interview" element={<Interview />} />
+        {/* <Route path="/feedback" element={<Feedback />} /> */}
+        <Route path="/results" element={<Results />} />
+      </Routes>
+
+    </BrowserRouter>
   );
 }
 

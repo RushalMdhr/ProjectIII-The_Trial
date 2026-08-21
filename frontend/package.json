@@ -13,7 +13,12 @@
     "vite": "^8.2.0"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "axios": "^1.19.0",
+    "lucide-react": "^1.33.0",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-router-dom": "^7.18.2",
+    "tailwindcss": "^4.3.3"
   }
 }
