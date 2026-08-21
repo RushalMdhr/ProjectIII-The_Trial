@@ -36,6 +36,11 @@ DB_USER=ur_username
 DB_PASSWORD=ur_password
 DJANGO_SECRET_KEY=your_screte
 
+## to view in the postgres PgAdmin
+you can put 
+PORT= 5433
+if 5432 is not working
+
 ### let the port and host be as it is
 
 ### before terminal i want you to make sure that ur frontend and backend are working
