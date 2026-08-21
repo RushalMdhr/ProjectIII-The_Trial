@@ -30,7 +30,7 @@ also make sure to create folder of your own name and create an env outside your 
 ## setting up your .yml file
 you dont need to change the ymal file just create .env file outside and put these variables
 DB_HOST=db
-DB_PORT=5433
+DB_PORT=5432
 DB_NAME=ur_db_name
 DB_USER=ur_username
 DB_PASSWORD=ur_password
