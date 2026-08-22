@@ -23,8 +23,6 @@ also make sure to create folder of your own name and create an env outside your 
       - Enter the database name
       - Choose the admin user you created earlier (from Login/Group Role)
       - Save the database
-- In the terminal:
-  - Run migrations and start the server
 ### from there u ll get the db name username and password for db
 
 ## setting up your .yml file
@@ -67,3 +65,9 @@ docker compose up -d --build
 docker compose ps
 ```
 #### if all 3 containers are shown u r ready to go 
+
+
+# Frontend Instalatio tip
+```
+docker exec -it react_frontend npm install <library>
+```
