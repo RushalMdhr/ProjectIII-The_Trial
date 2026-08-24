@@ -330,3 +330,17 @@ export async function login(
 
   return res.data;
 }
+
+export async function testConnection(message) {
+  const response = await fetch("http://localhost:8000/test_connect", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      message: message,
+    }),
+  });
+
+  return await response.json();
+}
