@@ -9,7 +9,7 @@ import InterviewSetup from "./pages/InterviewSetup";
 import Interview from "./pages/Interview";
 // import Feedback from "./pages/Feedback";
 import Results from "./pages/Results";
-
+import Test from "./pages/test";
 function App() {
   return (
     <BrowserRouter>
@@ -24,6 +24,7 @@ function App() {
 
         <Route path="/interview-setup" element={<InterviewSetup />} />
         <Route path="/interview" element={<Interview />} />
+        <Route path="/test" element={<Test />} />
         {/* <Route path="/feedback" element={<Feedback />} /> */}
         <Route path="/results" element={<Results />} />
       </Routes>
