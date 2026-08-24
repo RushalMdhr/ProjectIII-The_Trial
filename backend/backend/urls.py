@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("",include("common.urls")),
     path('', lambda request: HttpResponse("Your Backend Is Fine As Old Wine")),
+    path('accounts/', include('accounts.urls')),
 ]
