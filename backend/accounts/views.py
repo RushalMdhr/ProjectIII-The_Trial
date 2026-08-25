@@ -1,5 +1,5 @@
 import os
-
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
 from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
@@ -46,8 +46,9 @@ def test_account(request):
 def me(request):
     return Response({
         'id': request.user.id,
-        'username': request.user.username,
         'email': request.user.email,
+        'first_name': request.user.first_name,
+        'profile_picture': request.user.profile_picture,
     })
 
 
@@ -71,31 +72,35 @@ def google_callback(request):
 
     user_info = token.get('userinfo')
 
+    google_id = user_info.get('sub')
     email = user_info.get('email')
     name = user_info.get('name', '')
-
-    if not email:
-        return Response({'error': 'Email not provided by Google'}, status=400)
+    picture = user_info.get('picture')
 
     user, created = User.objects.get_or_create(
-        email=email,
+        google_id=google_id,
         defaults={
+            'email': email,
             'first_name': name,
+            'profile_picture': picture,
         }
     )
 
-    if created and hasattr(user, 'set_unusable_password'):
+    if created:
         user.set_unusable_password()
         user.save(update_fields=['password'])
 
+    refresh = RefreshToken.for_user(user)
+
     return Response({
-        'message': 'Google Authentication successful',
-        'user_created': created,
-        'user':{
+        'message': 'Google authentication successful',
+        'user': {
             'id': user.id,
-            'username': getattr(user, 'username', None),
+            'google_id': google_id,
             'email': user.email,
             'first_name': user.first_name,
-        } ,
-        'full information': user_info,
+            'profile_picture': user.profile_picture,
+        },
+        'access': str(refresh.access_token),
+        'refresh': str(refresh),
     })
