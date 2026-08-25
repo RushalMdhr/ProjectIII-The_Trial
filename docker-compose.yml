@@ -2,10 +2,8 @@ services:
   db:
     image: pgvector/pgvector:pg17
     container_name: postgres_vectordb
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - .env
     ports:
       - "5433:${DB_PORT}"
     volumes:
@@ -19,14 +17,8 @@ services:
   backend:
     build: ./backend
     container_name: django_backend
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_HOST: ${DB_HOST}
-      POSTGRES_PORT: ${DB_PORT}
-      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
-      DEBUG: "True"
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     depends_on:
@@ -50,8 +42,8 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:8000
+    env_file:
+      - .env
     command: npm run dev -- --host 0.0.0.0
 
 volumes:
