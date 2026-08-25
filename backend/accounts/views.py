@@ -1,9 +1,11 @@
 import os
+import json
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
 from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
-
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from authlib.integrations.django_client import OAuth
 
 from rest_framework.decorators import api_view, permission_classes
@@ -104,3 +106,27 @@ def google_callback(request):
         'access': str(refresh.access_token),
         'refresh': str(refresh),
     })
+
+
+@csrf_exempt
+def test_connect(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            message = data.get("message", "")
+            print("Message received from frontend:", message)
+
+            return JsonResponse({
+                "success": True,
+                "message": f"Backend received: {message}"
+            })
+        except Exception as e:
+            return JsonResponse({
+                "success": False,
+                "message": str(e)
+            }, status=400)
+
+    return JsonResponse({
+        "success": False,
+        "message": "Only POST requests are allowed."
+    }, status=405)
