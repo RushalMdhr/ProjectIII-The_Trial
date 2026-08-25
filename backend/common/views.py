@@ -21,11 +21,11 @@ def health_check(request):
             "pgvector": vector_version[0] if vector_version else None,
         })
 
-    except Exception as e:
+    except Exception:
         return JsonResponse({
             "backend": "connected",
             "database": "error",
-            "error": str(e),
+            "error": "Internal server error",
         }, status=500)
 
 def say_hello(request):
@@ -36,9 +36,9 @@ def say_hello(request):
             "Intern": "404 not found yet... 💀",
         })
 
-    except Exception as e:
+    except Exception:
         return JsonResponse({
             "backend": "connected",
             "database": "error",
-            "error": str(e),
+            "error": "Internal server error",
         }, status=500)

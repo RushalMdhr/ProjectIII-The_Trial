@@ -23,11 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("",include("common.urls")),
     path('', lambda request: HttpResponse("Your Backend Is Fine As Old Wine")),
-]
-
-
-urlpatterns = [
-    path("admin/", admin.site.urls),
-
+    path('accounts/', include('accounts.urls')),
     path("test_connect", test_connect),
 ]

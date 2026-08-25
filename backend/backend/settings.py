@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'common',
     'accounts',
 ]
+AUTH_USER_MODEL='accounts.User'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -76,11 +77,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB','postgres'),
-        'USER': os.environ.get('POSTGRES_USER','postgres'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD','postgres'),
-        'HOST': os.environ.get('POSTGRES_HOST','db'),
-        'PORT': os.environ.get('POSTGRES_PORT','5432'),
+        'NAME': os.environ.get('POSTGRES_DB', 'Project3'),
+        'USER': os.environ.get('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'postgres'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 }
 
@@ -98,4 +99,19 @@ REST_FRAMEWORK = {
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
     ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',    
+    ],
+}
+
+
+GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
+GOOGLE_REDIRECT_URI = 'http://localhost:8000/accounts/google/callback/'
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
