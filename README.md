@@ -64,6 +64,7 @@ npm i
 npm run dev
 ```
 
+
 ### NOTE : your backend might not run due to uncomposed yml but dw try composing the yml and its good to go
 
 ## Composing docker yml file
@@ -71,4 +72,13 @@ npm run dev
 docker compose up -d --build
 docker compose ps
 ```
-#### if all 3 containers are shown u r ready to go 
+#### if all 3 containers are shown u r ready to go
+
+vite.config.js updated with watch to show update live
+
+watch: {
+  usePolling: true,
+}
+This helps Vite detect changes when your React project is running inside Docker on Windows.
+
+Dockerfile builds the frontend environment, while the Docker volume syncs  local code and Vite detects changes to update the browser live.
