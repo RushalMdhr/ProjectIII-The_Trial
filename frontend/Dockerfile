@@ -3,7 +3,7 @@ FROM node:22
 WORKDIR /app
 
 # Copy package files
-COPY package.json ./
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install
@@ -11,14 +11,8 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Build the app
-RUN npm run build
+# Expose Vite development port
+EXPOSE 5173
 
-# Install serve for production
-RUN npm install -g serve
-
-# Expose port
-EXPOSE 3000
-
-# Serve the app
-CMD ["serve", "-s", "dist", "-l", "3000"]
+# Start Vite development server
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
