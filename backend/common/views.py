@@ -27,3 +27,18 @@ def health_check(request):
             "database": "error",
             "error": str(e),
         }, status=500)
+
+def say_hello(request):
+    try:
+        return JsonResponse({
+            "backend": "connected",
+            "database": "connected",
+            "Intern": "404 not found yet... 💀",
+        })
+
+    except Exception as e:
+        return JsonResponse({
+            "backend": "connected",
+            "database": "error",
+            "error": str(e),
+        }, status=500)

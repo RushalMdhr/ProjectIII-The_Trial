@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path,include
 from django.http import HttpResponse
 
+from accounts.views import test_connect
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("",include("common.urls")),
     path('', lambda request: HttpResponse("Your Backend Is Fine As Old Wine")),
     path('accounts/', include('accounts.urls')),
+    path("test_connect", test_connect),
 ]
