@@ -34,25 +34,16 @@ function delay(ms) {
 // TEMPORARY USERS DATABASE
 // =====================================================
 
-const USERS_KEY = "interviewai_users";
+let mockUsers = [];
 
 
 function getUsers() {
-  const savedUsers = localStorage.getItem(USERS_KEY);
-
-  if (!savedUsers) {
-    return [];
-  }
-
-  return JSON.parse(savedUsers);
+  return [...mockUsers];
 }
 
 
 function saveUsers(users) {
-  localStorage.setItem(
-    USERS_KEY,
-    JSON.stringify(users)
-  );
+  mockUsers = [...users];
 }
 
 
