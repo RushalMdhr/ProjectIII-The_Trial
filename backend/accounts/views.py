@@ -120,10 +120,10 @@ def test_connect(request):
                 "success": True,
                 "message": f"Backend received: {message}"
             })
-        except Exception as e:
+        except Exception:
             return JsonResponse({
                 "success": False,
-                "message": str(e)
+                "message": "Invalid request payload."
             }, status=400)
 
     return JsonResponse({
