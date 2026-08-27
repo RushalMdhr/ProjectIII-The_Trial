@@ -130,3 +130,82 @@ def test_connect(request):
         "success": False,
         "message": "Only POST requests are allowed."
     }, status=405)
+
+@api_view(['POST'])
+def register_account(request):
+    name = request.data.get('name') or request.data.get('first_name') or ''
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    # Check required fields
+    if not email or not password:
+        return Response({
+            'success': False,
+            'message': 'Email and password are required.'
+        }, status=400)
+
+    # Check email
+    if User.objects.filter(email=email).exists():
+        return Response({
+            'success': False,
+            'message': 'Email already exists.'
+        }, status=400)
+
+    username_base = email.split('@', 1)[0][:150] or 'user'
+    username = username_base
+    suffix = 1
+    while User.objects.filter(username=username).exists():
+        suffix_text = str(suffix)
+        username = f'{username_base[:150 - len(suffix_text)]}{suffix_text}'
+        suffix += 1
+
+    # Create user
+    user = User.objects.create_user(
+        username=username,
+        email=email,
+        password=password,
+        first_name=name
+    )
+
+    return Response({
+        'success': True,
+        'message': 'Account created successfully.',
+        'user': {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name
+        }
+    }, status=201)
+
+@api_view(['POST'])
+def login_account(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return Response({
+            'message': 'Invalid email or password'
+        }, status=400)
+
+    if not user.check_password(password):
+        return Response({
+            'message': 'Invalid email or password'
+        }, status=400)
+
+    refresh = RefreshToken.for_user(user)
+
+    return Response({
+        'success': True,
+        'message': 'Login successful',
+        'user': {
+            'id': user.id,
+            'email': user.email,
+            'first_name': user.first_name,
+            'profile_picture': user.profile_picture,
+        },
+        'access': str(refresh.access_token),
+        'refresh': str(refresh),
+    })
