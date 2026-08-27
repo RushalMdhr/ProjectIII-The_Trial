@@ -25,4 +25,5 @@ urlpatterns = [
     path('', lambda request: HttpResponse("Your Backend Is Fine As Old Wine")),
     path('accounts/', include('accounts.urls')),
     path("test_connect", test_connect),
+    path('chats/', include('chats.urls')),
 ]

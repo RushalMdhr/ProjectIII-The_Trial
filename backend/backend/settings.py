@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'common',
     'accounts',
+    'chats',
 ]
 AUTH_USER_MODEL='accounts.User'
 
