@@ -1,31 +1,127 @@
-import { Link } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-function Navbar() {
+const tokens = {
+  gold: "#FFB35B",
+  teal: "#45E0D0",
+  text: "#FBFAFF",
+};
+
+function Logo() {
+  const navigate = useNavigate();
+
   return (
-    <nav className="bg-white shadow-md px-8 py-4 flex items-center justify-between">
-      {/* Logo */}
-      <Link to="/" className="text-2xl font-bold text-blue-600">
-        InterviewAI
-      </Link>
+    <button
+      onClick={() => navigate("/")}
+      aria-label="Go to homepage"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        background: "none",
+        border: "none",
+        padding: 0,
+        cursor: "pointer",
+      }}
+    >
+      <svg
+        width="34"
+        height="34"
+        viewBox="0 0 40 40"
+        fill="none"
+      >
+        <circle
+          cx="20"
+          cy="20"
+          r="17.5"
+          stroke="rgba(255,255,255,0.2)"
+          strokeWidth="3"
+        />
 
-      {/* Navigation */}
-      <div className="flex items-center gap-4">
-        <Link
-          to="/login"
-          className="px-5 py-2 text-blue-600 font-semibold border border-blue-600 rounded-lg hover:bg-blue-50 transition"
-        >
-          Login
-        </Link>
+        <path
+          d="M20 2.5 A17.5 17.5 0 0 1 35.4 28.7"
+          stroke={tokens.gold}
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
 
-        <Link
-          to="/register"
-          className="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+        <circle
+          cx="20"
+          cy="20"
+          r="6"
+          fill={tokens.teal}
+        />
+      </svg>
+
+      <span
+        className="cp-display"
+        style={{
+          fontSize: 18,
+          fontWeight: 700,
+          color: tokens.text,
+        }}
+      >
+        AI
+        <span style={{ color: tokens.teal }}>
+          HELPER
+        </span>
+      </span>
+    </button>
+  );
+}
+
+export default function Navbar() {
+  return (
+    <nav
+      className="cp-navbar"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "22px 48px",
+        width: "100%",
+      }}
+    >
+      {/* LOGO */}
+      <Logo />
+
+      {/* PROFILE */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
+        }}
+      >
+        <span
+          style={{
+            fontSize: 13.5,
+            color: "#C2C4EC",
+          }}
         >
-          Register
-        </Link>
+          Hi, Jane
+        </span>
+
+        <div
+          style={{
+            width: 34,
+            height: 34,
+            borderRadius: "50%",
+            background:
+              `linear-gradient(135deg, ${tokens.gold}, ${tokens.teal})`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 13,
+            fontWeight: 700,
+            color: "#191C36",
+          }}
+        >
+          JD
+        </div>
       </div>
     </nav>
   );
 }
 
-export default Navbar;
+export { Logo };

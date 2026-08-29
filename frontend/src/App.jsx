@@ -1,33 +1,38 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
-
+// import Footer from "./components/Footer";
 import Home from "./pages/home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import InterviewSetup from "./pages/InterviewSetup";
 import Interview from "./pages/Interview";
-// import Feedback from "./pages/Feedback";
 import Results from "./pages/Results";
 import Test from "./pages/test";
+import AskQuestion from "./pages/AskQuestion";
 function App() {
   return (
     <BrowserRouter>
 
-      <Navbar />
+      <div className="app-layout">
 
-      <Routes>
-        <Route path="/" element={<Home />} />
+        <Navbar />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <main className="app-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/interview-setup" element={<InterviewSetup />} />
+            <Route path="/interview" element={<Interview />} />
+            <Route path="/test" element={<Test />} />
+            <Route path="/results" element={<Results />} />
+            <Route path="/ask-question" element={<AskQuestion />} />
+          </Routes>
+        </main>
 
-        <Route path="/interview-setup" element={<InterviewSetup />} />
-        <Route path="/interview" element={<Interview />} />
-        <Route path="/test" element={<Test />} />
-        {/* <Route path="/feedback" element={<Feedback />} /> */}
-        <Route path="/results" element={<Results />} />
-      </Routes>
+
+      </div>
 
     </BrowserRouter>
   );
