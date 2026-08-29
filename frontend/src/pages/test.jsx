@@ -1,37 +1,11 @@
-import { useState } from "react";
-import { testConnection } from "../services/api";
+import React from 'react'
 
-function Test() {
-  const [message, setMessage] = useState("");
-  const [response, setResponse] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const data = await testConnection(message);
-
-    console.log(data);
-    setResponse(data.message);
-  };
-
+const test = () => {
   return (
     <div>
-      <h1>Test Backend Connection</h1>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Enter message"
-        />
-
-        <button type="submit">Send</button>
-      </form>
-
-      <p>Backend Response: {response}</p>
+      button  
     </div>
-  );
+  )
 }
 
-export default Test;
+export default test
