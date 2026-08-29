@@ -1,14 +1,12 @@
-// src/services/api.js
-
 import axios from "axios";
-
 
 // =====================================================
 // MOCK MODE
 // =====================================================
 
-// Keep this TRUE while we are developing without Django.
-// Later your team will change this to false.
+// Keep TRUE for now.
+// When Django register/login APIs are ready,
+// change this to FALSE.
 const USE_MOCK = true;
 
 
@@ -22,7 +20,29 @@ const client = axios.create({
 
 
 // =====================================================
-// HELPER FUNCTIONS
+// JWT INTERCEPTOR
+// =====================================================
+
+client.interceptors.request.use(
+  (config) => {
+
+    const token = localStorage.getItem("accessToken");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+
+// =====================================================
+// HELPER
 // =====================================================
 
 function delay(ms) {
@@ -31,20 +51,10 @@ function delay(ms) {
 
 
 // =====================================================
-// TEMPORARY USERS DATABASE
+// TEMPORARY MOCK USERS
 // =====================================================
 
 let mockUsers = [];
-
-
-function getUsers() {
-  return [...mockUsers];
-}
-
-
-function saveUsers(users) {
-  mockUsers = [...users];
-}
 
 
 // =====================================================
@@ -55,17 +65,11 @@ export async function askQuestion(question) {
 
   if (USE_MOCK) {
 
-    // Pretend we are waiting for the backend.
     await delay(800);
 
     const userQuestion = question
       .toLowerCase()
       .trim();
-
-
-    // ---------------------------------------------
-    // 2026 MOST ASKED QUESTIONS
-    // ---------------------------------------------
 
     if (
       userQuestion.includes("2026") &&
@@ -81,11 +85,6 @@ export async function askQuestion(question) {
 
     }
 
-
-    // ---------------------------------------------
-    // DEFAULT RESPONSE
-    // ---------------------------------------------
-
     return {
       answer: [
         `I don't have specific data for "${question}" yet.`,
@@ -93,11 +92,6 @@ export async function askQuestion(question) {
       ],
     };
   }
-
-
-  // ---------------------------------------------
-  // REAL DJANGO BACKEND — LATER
-  // ---------------------------------------------
 
   const res = await client.post(
     "/interview/",
@@ -127,7 +121,6 @@ export async function startInterview(level) {
         "Tell me about a project you're proud of.",
     };
   }
-
 
   const res = await client.post(
     "/interview/start",
@@ -164,7 +157,6 @@ export async function submitAnswer(
     };
   }
 
-
   const res = await client.post(
     `/interview/${sessionId}/answer`,
     {
@@ -186,19 +178,20 @@ export async function register(
   password
 ) {
 
+  // ---------------------------------------------
+  // MOCK REGISTER
+  // ---------------------------------------------
+
   if (USE_MOCK) {
 
     await delay(800);
 
-    // Get existing users.
-    const users = getUsers();
-
-
-    // Check whether email already exists.
-    const existingUser = users.find(
-      (user) => user.email === email
+    // Check if email already exists
+    const existingUser = mockUsers.find(
+      (user) =>
+        user.email.toLowerCase() ===
+        email.toLowerCase()
     );
-
 
     if (existingUser) {
 
@@ -209,8 +202,7 @@ export async function register(
 
     }
 
-
-    // Create new user.
+    // Create temporary user
     const newUser = {
       id: Date.now(),
       name: name,
@@ -218,14 +210,7 @@ export async function register(
       password: password,
     };
 
-
-    // Add user.
-    users.push(newUser);
-
-
-    // Save users.
-    saveUsers(users);
-
+    mockUsers.push(newUser);
 
     return {
       success: true,
@@ -241,13 +226,13 @@ export async function register(
 
 
   // ---------------------------------------------
-  // REAL DJANGO BACKEND — LATER
+  // REAL DJANGO BACKEND
   // ---------------------------------------------
 
   const res = await client.post(
-    "/auth/register",
+    "/accounts/register/",
     {
-      name: name,
+      first_name: name,
       email: email,
       password: password,
     }
@@ -266,23 +251,21 @@ export async function login(
   password
 ) {
 
+  // ---------------------------------------------
+  // MOCK LOGIN
+  // ---------------------------------------------
+
   if (USE_MOCK) {
 
     await delay(800);
 
-    // Get registered users.
-    const users = getUsers();
-
-
-    // Find matching user.
-    const user = users.find(
+    const user = mockUsers.find(
       (user) =>
-        user.email === email &&
+        user.email.toLowerCase() ===
+        email.toLowerCase() &&
         user.password === password
     );
 
-
-    // No user found.
     if (!user) {
 
       return {
@@ -292,11 +275,13 @@ export async function login(
 
     }
 
-
-    // User found.
     return {
       success: true,
       message: "Login successful!",
+
+      // Mock tokens for frontend testing
+      access: "mock-access-token",
+      refresh: "mock-refresh-token",
 
       user: {
         id: user.id,
@@ -308,11 +293,11 @@ export async function login(
 
 
   // ---------------------------------------------
-  // REAL DJANGO BACKEND — LATER
+  // REAL DJANGO BACKEND
   // ---------------------------------------------
 
   const res = await client.post(
-    "/auth/login",
+    "/accounts/login/",
     {
       email: email,
       password: password,
@@ -322,16 +307,53 @@ export async function login(
   return res.data;
 }
 
+
+// =====================================================
+// GET CURRENT USER
+// =====================================================
+
+export async function getCurrentUser() {
+
+  const res = await client.get(
+    "/accounts/me/"
+  );
+
+  return res.data;
+}
+
+
+// =====================================================
+// LOGOUT
+// =====================================================
+
+export function logout() {
+
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("currentUser");
+}
+
+
+// =====================================================
+// TEST CONNECTION
+// =====================================================
+
 export async function testConnection(message) {
-  const response = await fetch("http://localhost:8000/test_connect", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      message: message,
-    }),
-  });
+
+  const response = await fetch(
+    "http://localhost:8000/test_connect",
+    {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        message: message,
+      }),
+    }
+  );
 
   return await response.json();
 }
