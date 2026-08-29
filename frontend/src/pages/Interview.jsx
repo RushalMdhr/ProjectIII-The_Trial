@@ -1,178 +1,451 @@
-import { Navigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { ArrowLeft, Send, Sparkles } from "lucide-react";
 import { askQuestion } from "../services/api";
 
-function Interview() {
+export default function Interview() {
   const { state } = useLocation();
-  const level = state?.level;
+  const navigate = useNavigate();
 
-  // -----------------------------
-  // STATE
-  // -----------------------------
+  const level = state?.level;
 
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // -----------------------------
-  // IF NO LEVEL WAS SELECTED
-  // -----------------------------
-
+  // If user opens /interview directly
   if (!level) {
     return <Navigate to="/interview-setup" replace />;
   }
 
-  // -----------------------------
-  // HANDLE ASK BUTTON
-  // -----------------------------
-
   const handleAskQuestion = async (e) => {
     e.preventDefault();
 
-    // Don't do anything if input is empty
-    if (!question.trim()) {
-      return;
-    }
+    if (!question.trim()) return;
 
     setLoading(true);
     setError("");
     setAnswer([]);
 
     try {
-      // Send question to our API
       const res = await askQuestion(question);
 
       console.log("API response:", res);
 
-      // Get answer from API
-      setAnswer(res.answer);
-
+      setAnswer(res.answer || []);
     } catch (err) {
       console.error(err);
-
       setError("Something went wrong. Please try again.");
-
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 px-6 py-16 text-white">
+    <div className="interview-page">
 
-      <div className="mx-auto max-w-4xl">
+      <style>{`
+        .interview-page {
+          min-height: 100vh;
+          width: 100%;
+          box-sizing: border-box;
+          padding: 28px 24px;
+          background:
+            radial-gradient(
+              circle at 20% 20%,
+              rgba(139, 124, 246, 0.25),
+              transparent 35%
+            ),
+            radial-gradient(
+              circle at 80% 70%,
+              rgba(69, 224, 208, 0.15),
+              transparent 35%
+            ),
+            #2B2F63;
+          color: #FBFAFF;
+          font-family: Inter, Arial, sans-serif;
+        }
 
-        {/* ----------------------------- */}
-        {/* HEADER */}
-        {/* ----------------------------- */}
+        .interview-wrapper {
+          width: 100%;
+          max-width: 900px;
+          margin: 0 auto;
+        }
 
-        <p className="text-sm text-blue-400">
-          {level.name}
-        </p>
+        /* TOP */
 
-        <h1 className="mt-2 text-3xl font-bold">
-          {level.label} interview
-        </h1>
+        .interview-top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 35px;
+        }
 
-        <p className="mt-3 text-white/60">
-          {level.desc}
-        </p>
+        .interview-logo {
+          font-size: 20px;
+          font-weight: 800;
+          letter-spacing: -0.02em;
+        }
 
-        <p className="mt-6 text-sm text-white/50">
-          Estimated time: {level.time}
-        </p>
+        .interview-logo span {
+          color: #45E0D0;
+        }
 
+        .interview-back {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: transparent;
+          border: none;
+          color: #C2C4EC;
+          cursor: pointer;
+          font-size: 13px;
+          padding: 6px 0;
+        }
 
-        {/* ----------------------------- */}
-        {/* ASK QUESTION */}
-        {/* ----------------------------- */}
+        .interview-back:hover {
+          color: #FFFFFF;
+        }
 
-        <div className="mt-12">
+        /* HEADER */
 
-          <h2 className="text-xl font-semibold mb-4">
-            Ask InterviewAI
-          </h2>
+        .interview-header {
+          text-align: center;
+          margin-bottom: 35px;
+        }
 
-          <form
-            onSubmit={handleAskQuestion}
-            className="flex gap-3"
+        .interview-label {
+          display: inline-block;
+          color: #FFB35B;
+          font-size: 11px;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          margin-bottom: 10px;
+        }
+
+        .interview-header h1 {
+          margin: 0 0 10px;
+          font-size: 36px;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+        }
+
+        .interview-header p {
+          margin: 0;
+          color: #C2C4EC;
+          font-size: 14px;
+          line-height: 1.6;
+        }
+
+        /* INFO */
+
+        .interview-info {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+          flex-wrap: wrap;
+          margin-top: 20px;
+        }
+
+        .info-pill {
+          padding: 8px 14px;
+          border-radius: 999px;
+          background: rgba(255,255,255,0.07);
+          border: 1px solid rgba(255,255,255,0.12);
+          color: #C2C4EC;
+          font-size: 12px;
+        }
+
+        .info-pill strong {
+          color: #45E0D0;
+          font-weight: 600;
+        }
+
+        /* QUESTION BOX */
+
+        .question-area {
+          padding: 25px;
+          border-radius: 20px;
+          background: rgba(255,255,255,0.06);
+          border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .question-title {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          margin-bottom: 16px;
+          color: #FBFAFF;
+          font-size: 16px;
+          font-weight: 600;
+        }
+
+        .question-title svg {
+          color: #45E0D0;
+        }
+
+        .question-form {
+          display: flex;
+          gap: 10px;
+        }
+
+        .question-input {
+          flex: 1;
+          min-width: 0;
+          box-sizing: border-box;
+          padding: 14px 17px;
+          border-radius: 12px;
+          border: 1px solid rgba(255,255,255,0.14);
+          background: rgba(255,255,255,0.07);
+          color: white;
+          font-size: 14px;
+          outline: none;
+        }
+
+        .question-input::placeholder {
+          color: rgba(194,196,236,0.5);
+        }
+
+        .question-input:focus {
+          border-color: rgba(69,224,208,0.6);
+          background: rgba(255,255,255,0.09);
+        }
+
+        .ask-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 14px 22px;
+          border: none;
+          border-radius: 12px;
+          background: #45E0D0;
+          color: #0B2B2B;
+          font-weight: 700;
+          cursor: pointer;
+          transition: 0.2s ease;
+        }
+
+        .ask-button:hover:not(:disabled) {
+          transform: translateY(-1px);
+          background: #5BE9DA;
+        }
+
+        .ask-button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        /* EMPTY */
+
+        .empty-state {
+          text-align: center;
+          padding: 28px 10px 4px;
+          color: #9295BE;
+          font-size: 13px;
+        }
+
+        /* ERROR */
+
+        .error-box {
+          margin-top: 18px;
+          padding: 14px;
+          border-radius: 12px;
+          background: rgba(244,97,91,0.1);
+          border: 1px solid rgba(244,97,91,0.25);
+          color: #F88B85;
+          font-size: 13px;
+        }
+
+        /* ANSWER */
+
+        .answer-area {
+          margin-top: 25px;
+        }
+
+        .answer-title {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 15px;
+          color: #FBFAFF;
+          font-size: 16px;
+          font-weight: 600;
+        }
+
+        .answer-title svg {
+          color: #45E0D0;
+        }
+
+        .answer-item {
+          padding: 16px 18px;
+          margin-bottom: 10px;
+          border-radius: 13px;
+          background: rgba(255,255,255,0.06);
+          border: 1px solid rgba(255,255,255,0.1);
+          color: #E8E8F5;
+          font-size: 14px;
+          line-height: 1.6;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+          .interview-page {
+            padding: 20px 15px;
+          }
+
+          .interview-top {
+            margin-bottom: 28px;
+          }
+
+          .interview-header h1 {
+            font-size: 29px;
+          }
+
+          .question-area {
+            padding: 18px;
+          }
+
+          .question-form {
+            flex-direction: column;
+          }
+
+          .ask-button {
+            width: 100%;
+          }
+        }
+      `}</style>
+
+      <div className="interview-wrapper">
+
+        {/* TOP */}
+        <div className="interview-top">
+
+          <div className="interview-logo">
+            AI <span>HELPER</span>
+          </div>
+
+          <button
+            className="interview-back"
+            onClick={() => navigate("/interview-setup")}
           >
-
-            <input
-              type="text"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Ask something like: 2026 most asked questions"
-              className="flex-1 px-4 py-3 rounded-xl
-                         bg-white/10
-                         border border-white/10
-                         text-white
-                         placeholder-white/30
-                         focus:outline-none
-                         focus:border-blue-500"
-            />
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-6 py-3 rounded-xl
-                         bg-blue-600
-                         hover:bg-blue-700
-                         font-semibold
-                         transition
-                         disabled:opacity-50"
-            >
-              {loading ? "Thinking..." : "Ask"}
-            </button>
-
-          </form>
+            <ArrowLeft size={14} />
+            Back
+          </button>
 
         </div>
 
 
-        {/* ----------------------------- */}
-        {/* ERROR */}
-        {/* ----------------------------- */}
+        {/* HEADER */}
+        <div className="interview-header">
 
+          <span className="interview-label">
+            Mock Interview
+          </span>
+
+          <h1>
+            {level.label} Interview
+          </h1>
+
+          <p>
+            {level.desc}
+          </p>
+
+          <div className="interview-info">
+
+            <div className="info-pill">
+              Level: <strong>{level.label}</strong>
+            </div>
+
+            <div className="info-pill">
+              Time: <strong>{level.time}</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        {/* ASK QUESTION */}
+        <div className="question-area">
+
+          <div className="question-title">
+            <Sparkles size={17} />
+            Ask InterviewAI
+          </div>
+
+          <form
+            className="question-form"
+            onSubmit={handleAskQuestion}
+          >
+
+            <input
+              className="question-input"
+              type="text"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="Ask an interview question..."
+            />
+
+            <button
+              className="ask-button"
+              type="submit"
+              disabled={loading || !question.trim()}
+            >
+
+              <Send
+                size={15}
+                style={{
+                  marginRight: 6,
+                }}
+              />
+
+              {loading ? "Thinking..." : "Ask"}
+
+            </button>
+
+          </form>
+
+
+          {!answer.length && !loading && (
+            <div className="empty-state">
+              Ask your first question to start practicing.
+            </div>
+          )}
+
+        </div>
+
+
+        {/* ERROR */}
         {error && (
-          <div className="mt-6 p-4 rounded-xl
-                          bg-red-500/10
-                          border border-red-500/20
-                          text-red-400">
+          <div className="error-box">
             {error}
           </div>
         )}
 
 
-        {/* ----------------------------- */}
         {/* ANSWER */}
-        {/* ----------------------------- */}
-
         {answer.length > 0 && (
 
-          <div className="mt-8">
+          <div className="answer-area">
 
-            <h2 className="text-xl font-semibold mb-4">
-              InterviewAI says:
-            </h2>
-
-            <div className="space-y-3">
-
-              {answer.map((item, index) => (
-
-                <div
-                  key={index}
-                  className="p-5 rounded-xl
-                             bg-white/5
-                             border border-white/10"
-                >
-                  {item}
-                </div>
-
-              ))}
-
+            <div className="answer-title">
+              <Sparkles size={17} />
+              InterviewAI says
             </div>
+
+            {answer.map((item, index) => (
+
+              <div
+                key={index}
+                className="answer-item"
+              >
+                {item}
+              </div>
+
+            ))}
 
           </div>
 
@@ -183,5 +456,3 @@ function Interview() {
     </div>
   );
 }
-
-export default Interview;
