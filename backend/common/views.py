@@ -6,7 +6,9 @@ from django.db import connection
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .models import ChatMessage
+from .models import *
+from ai.utils.embeddings import embed_text
+from ai.llm import ai
 
 
 def health_check(request):
@@ -53,7 +55,7 @@ def say_hello(request):
 def chat(request):
     try:
         data = request.data
-        content = data.get("content") or data.get("message", "")
+        content = data.get("content") or data.get("message", "") #yo ta fix hunxa timro colum sanga
         title = (data.get("title") or content[:255]).strip()
 
         if not content.strip():
@@ -78,7 +80,7 @@ def chat(request):
 
         return JsonResponse({
             "success": True,
-            "id": chat_message.id,
+            # "id": chat_message.id,
             "userId": request.user.id,
             "title": chat_message.title,
             "content": chat_message.content,
@@ -86,6 +88,79 @@ def chat(request):
         })
 
     except Exception as e:
+        return JsonResponse({
+            "success": False,
+            "error": str(e)
+        }, status=500)
+
+@api_view(['POST'])
+# @authentication_classes([JWTAuthentication])
+# @permission_classes([IsAuthenticated])
+def SimpleSave(request):
+    try:
+        print("Request reached here", flush=True)
+        text = request.data.get("text")
+
+        if not text.strip():
+            return JsonResponse({
+                "success": False,
+                "error": "no text to embed"
+            }, status=400)
+
+        chat_message = SimpleTextEmbedding.objects.create(
+            text=text,
+            embedding=embed_text(text)
+        )
+
+        response_message = f"Echo: {text}"
+
+        return JsonResponse({
+            "success": True,
+            "embeding": chat_message.text,
+            "response": response_message,
+        })
+    except Exception as e:
+        print(f'error __ : {e}')
+        return JsonResponse({
+            "success": False,
+            "error": str(e)
+        }, status=500)
+
+@api_view(['POST'])
+def TalkToAi(request):
+    try:
+        print("Request reached here", flush=True)
+        text = request.data.get("query")
+
+        if not text.strip():
+            return JsonResponse({
+                "success": False,
+                "error": "no text to embed"
+            }, status=400)
+        entries = SimpleTextEmbedding.objects.all()
+        context = "\n".join([f"ID: {obj.id}, Text: {obj.text}" for obj in entries])
+        sys_prompt= f'''
+        you are a helpful assistent and please help the user with only the context provided 
+        {context}
+        '''
+        msg = [
+            {'role' : 'system' ,
+              'content' : sys_prompt
+            },
+            {
+                'role':'user',
+                'content' : text
+            }
+              ]
+        res = ai(msg=msg)
+        
+
+        return JsonResponse({
+            "success": True,
+            'res' : res.message.content
+        })
+    except Exception as e:
+        print(f'error __ : {e}')
         return JsonResponse({
             "success": False,
             "error": str(e)
