@@ -74,6 +74,11 @@ docker compose ps
 ```
 #### if all 3 containers are shown u r ready to go
 
+## want to restart the docker specific container
+```bash
+docker compose restart backend #<container name>
+```
+
 vite.config.js updated with watch to show update live
 
 watch: {
@@ -82,3 +87,49 @@ watch: {
 This helps Vite detect changes when your React project is running inside Docker on Windows.
 
 Dockerfile builds the frontend environment, while the Docker volume syncs  local code and Vite detects changes to update the browser live.
+
+## BACKEND
+### lets do this make migration overhead my gos it took me days to figure out
+
+```bash
+docker-compose exec backend python manage.py makemigrations
+docker-compose exec backend python manage.py migrate
+```
+```bash
+docker compose exec backend pip show pgvector
+```
+
+### DB Problem
+#### if db not found or some problem 
+```bash
+docker compose down
+docker compose down -v
+```
+
+### Requirements Problem
+#### make sure to add what u installed to requirements.txt so that docker can install it too
+if want to add auto mode
+```bash
+cd backend
+```
+```bash
+pip freeze > requirements.txt
+```
+
+### BASH
+#### how to see the live log through terminal
+```bash
+docker logs -f django_backend
+```
+
+# DJANGO SHELL ORM CRUDE
+### To get inside the shell
+```bash
+docker compose exec backend python manage.py shell
+```
+```bash
+from common.models import SimpleTextEmbedding
+objects = SimpleTextEmbedding.objects.all()
+for x in objects:
+  print(x.id)
+```
