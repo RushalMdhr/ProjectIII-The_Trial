@@ -1,4 +1,4 @@
-from ai.embeddings import create_embedding
+from backend.ai.utils.embeddings import create_embedding
 from ai.llm import generate_response
 
 
