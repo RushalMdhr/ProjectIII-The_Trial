@@ -133,3 +133,6 @@ objects = SimpleTextEmbedding.objects.all()
 for x in objects:
   print(x.id)
 ```
+
+# Starting Django app
+py manage.py startapp app_name  
