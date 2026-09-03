@@ -114,6 +114,6 @@ GOOGLE_REDIRECT_URI = 'http://localhost:8000/accounts/google/callback/'
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=50),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
