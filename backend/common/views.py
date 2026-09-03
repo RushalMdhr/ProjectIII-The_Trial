@@ -1,6 +1,8 @@
 
 # views.py
 
+import os
+
 from django.http import JsonResponse
 from django.db import connection
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -93,6 +95,8 @@ def chat(request):
             "error": str(e)
         }, status=500)
 
+
+# ========================================= simple embedding test ===========================
 @api_view(['POST'])
 # @authentication_classes([JWTAuthentication])
 # @permission_classes([IsAuthenticated])
@@ -126,23 +130,28 @@ def SimpleSave(request):
             "error": str(e)
         }, status=500)
 
+# ========================================= simple query request to llama 3.2 ===========================
+
 @api_view(['POST'])
 def TalkToAi(request):
     try:
         print("Request reached here", flush=True)
         text = request.data.get("query")
+        print("=================================")
 
         if not text.strip():
             return JsonResponse({
                 "success": False,
                 "error": "no text to embed"
             }, status=400)
+        
         entries = SimpleTextEmbedding.objects.all()
         context = "\n".join([f"ID: {obj.id}, Text: {obj.text}" for obj in entries])
-        sys_prompt= f'''
-        you are a helpful assistent and please help the user with only the context provided 
-        {context}
-        '''
+
+        dotenv_system_prompt = os.getenv("SYSTEM_CHAT_PROMPT","you are a helpful assistant")
+        print(f"dotenv_system_prompt : {dotenv_system_prompt} , context : {context}", flush=True)
+        sys_prompt= f"""prompt : {dotenv_system_prompt} , given the context : {context}"""
+
         msg = [
             {'role' : 'system' ,
               'content' : sys_prompt
@@ -153,11 +162,11 @@ def TalkToAi(request):
             }
               ]
         res = ai(msg=msg)
-        
 
         return JsonResponse({
             "success": True,
-            'res' : res.message.content
+            'res' : res.message.content,
+            'dotenv_system_prompt' : dotenv_system_prompt,
         })
     except Exception as e:
         print(f'error __ : {e}')

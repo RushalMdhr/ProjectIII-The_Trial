@@ -1,12 +1,6 @@
 from django.db import models
-
-try:
-    from pgvector.django import VectorField  # type: ignore[import-not-found]
-except ImportError:
-    class VectorField(models.Field):
-        def __init__(self, *args, **kwargs):
-            kwargs.setdefault("editable", False)
-            super().__init__(*args, **kwargs)
+from pgvector.django import VectorField
+from .RAG_models import *
 
 # Create your models here.
 class ChatMessage(models.Model):
