@@ -1,21 +1,11 @@
 import axios from "axios";
 
 // =====================================================
-// MOCK MODE
-// =====================================================
-
-// Keep TRUE for now.
-// When Django register/login APIs are ready,
-// change this to FALSE.
-const USE_MOCK = true;
-
-
-// =====================================================
 // AXIOS CLIENT
 // =====================================================
 
 const client = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000",
 });
 
 
@@ -42,57 +32,10 @@ client.interceptors.request.use(
 
 
 // =====================================================
-// HELPER
-// =====================================================
-
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-
-// =====================================================
-// TEMPORARY MOCK USERS
-// =====================================================
-
-let mockUsers = [];
-
-
-// =====================================================
 // ASK QUESTION
 // =====================================================
 
 export async function askQuestion(question) {
-
-  if (USE_MOCK) {
-
-    await delay(800);
-
-    const userQuestion = question
-      .toLowerCase()
-      .trim();
-
-    if (
-      userQuestion.includes("2026") &&
-      userQuestion.includes("most asked")
-    ) {
-
-      return {
-        answer: [
-          "1. Tell me about yourself and your background.",
-          "2. Why should we hire you for this position?",
-        ],
-      };
-
-    }
-
-    return {
-      answer: [
-        `I don't have specific data for "${question}" yet.`,
-        "Try asking: What are the most asked questions in 2026?",
-      ],
-    };
-  }
-
   const res = await client.post(
     "/interview/",
     {
@@ -109,19 +52,6 @@ export async function askQuestion(question) {
 // =====================================================
 
 export async function startInterview(level) {
-
-  if (USE_MOCK) {
-
-    await delay(600);
-
-    return {
-      sessionId: "mock-session-1",
-      level: level,
-      firstQuestion:
-        "Tell me about a project you're proud of.",
-    };
-  }
-
   const res = await client.post(
     "/interview/start",
     {
@@ -141,22 +71,6 @@ export async function submitAnswer(
   sessionId,
   answer
 ) {
-
-  if (USE_MOCK) {
-
-    await delay(700);
-
-    return {
-      feedback:
-        "Solid answer — try to quantify the impact next time.",
-
-      nextQuestion:
-        "What was the hardest bug you fixed recently?",
-
-      done: false,
-    };
-  }
-
   const res = await client.post(
     `/interview/${sessionId}/answer`,
     {
@@ -177,58 +91,6 @@ export async function register(
   email,
   password
 ) {
-
-  // ---------------------------------------------
-  // MOCK REGISTER
-  // ---------------------------------------------
-
-  if (USE_MOCK) {
-
-    await delay(800);
-
-    // Check if email already exists
-    const existingUser = mockUsers.find(
-      (user) =>
-        user.email.toLowerCase() ===
-        email.toLowerCase()
-    );
-
-    if (existingUser) {
-
-      return {
-        success: false,
-        message: "Email is already registered.",
-      };
-
-    }
-
-    // Create temporary user
-    const newUser = {
-      id: Date.now(),
-      name: name,
-      email: email,
-      password: password,
-    };
-
-    mockUsers.push(newUser);
-
-    return {
-      success: true,
-      message: "Registration successful!",
-
-      user: {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-      },
-    };
-  }
-
-
-  // ---------------------------------------------
-  // REAL DJANGO BACKEND
-  // ---------------------------------------------
-
   const res = await client.post(
     "/accounts/register/",
     {
@@ -250,52 +112,6 @@ export async function login(
   email,
   password
 ) {
-
-  // ---------------------------------------------
-  // MOCK LOGIN
-  // ---------------------------------------------
-
-  if (USE_MOCK) {
-
-    await delay(800);
-
-    const user = mockUsers.find(
-      (user) =>
-        user.email.toLowerCase() ===
-        email.toLowerCase() &&
-        user.password === password
-    );
-
-    if (!user) {
-
-      return {
-        success: false,
-        message: "Invalid email or password.",
-      };
-
-    }
-
-    return {
-      success: true,
-      message: "Login successful!",
-
-      // Mock tokens for frontend testing
-      access: "mock-access-token",
-      refresh: "mock-refresh-token",
-
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      },
-    };
-  }
-
-
-  // ---------------------------------------------
-  // REAL DJANGO BACKEND
-  // ---------------------------------------------
-
   const res = await client.post(
     "/accounts/login/",
     {
@@ -339,21 +155,10 @@ export function logout() {
 // =====================================================
 
 export async function testConnection(message) {
-
-  const response = await fetch(
-    "http://localhost:8000/test_connect",
-    {
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({
-        message: message,
-      }),
-    }
+  const response = await client.post(
+    "/test_connect",
+    { message }
   );
 
-  return await response.json();
+  return response.data;
 }
