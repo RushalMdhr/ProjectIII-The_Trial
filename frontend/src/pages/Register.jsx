@@ -1,7 +1,182 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AuthLayout from "../components/AuthLayout";
-import { register } from "../services/api";
+import { Sparkles } from "lucide-react";
+import { login, register } from "../services/api";
+import HomeBackground from "../components/HomeBackground";
+
+/* =========================================
+   TOKENS — same palette as HomePage
+========================================= */
+
+const tokens = {
+  bg: "#2B2F63",
+  bgLo: "#232752",
+  glass: "rgba(255,255,255,0.06)",
+  glassHi: "rgba(255,255,255,0.10)",
+  border: "rgba(255,255,255,0.14)",
+  violet: "#8B7CF6",
+  gold: "#FFB35B",
+  goldSoft: "#FFB35B2b",
+  goldLine: "#FFB35B70",
+  teal: "#45E0D0",
+  tealSoft: "#45E0D02b",
+  tealLine: "#45E0D070",
+  text: "#FBFAFF",
+  textMuted: "#C2C4EC",
+};
+
+/* =========================================
+   GLOBAL STYLE
+========================================= */
+
+function GlobalStyle() {
+  return (
+    <style>{`
+      .rg-root * { box-sizing: border-box; }
+      .rg-root { font-family: Inter, Arial, sans-serif; }
+      .rg-display { font-family: "Space Grotesk", Inter, sans-serif; }
+      .rg-mono { font-family: "JetBrains Mono", monospace; }
+
+      .rg-input {
+        width: 100%;
+        padding: 13px 16px;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.05);
+        border: 1.5px solid ${tokens.border};
+        color: ${tokens.text};
+        font-size: 14.5px;
+        font-family: Inter, Arial, sans-serif;
+        outline: none;
+        transition: border-color 0.2s ease, background 0.2s ease;
+      }
+
+      .rg-input::placeholder { color: rgba(194,196,236,0.45); }
+
+      .rg-input:focus {
+        border-color: ${tokens.teal};
+        background: rgba(255,255,255,0.08);
+      }
+
+      .rg-icon-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: ${tokens.textMuted};
+        font-size: 15px;
+        padding: 4px;
+        line-height: 1;
+      }
+
+      .rg-icon-btn:hover { color: ${tokens.text}; }
+
+      .rg-link {
+        color: ${tokens.teal};
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .rg-link:hover { text-decoration: underline; }
+
+      .rg-checkbox {
+        width: 16px;
+        height: 16px;
+        accent-color: ${tokens.teal};
+        flex-shrink: 0;
+      }
+
+      .rg-primary-btn {
+        width: 100%;
+        padding: 14px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        font-family: Inter, Arial, sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: ${tokens.bg};
+        background: linear-gradient(100deg, ${tokens.teal}, ${tokens.gold});
+        transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        box-shadow: 0 16px 32px -14px rgba(69,224,208,0.35);
+      }
+
+      .rg-primary-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 40px -14px rgba(69,224,208,0.5);
+      }
+
+      .rg-primary-btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .rg-banner-error {
+        font-size: 13.5px;
+        color: #FF9A9A;
+        background: rgba(255,90,90,0.10);
+        border: 1px solid rgba(255,90,90,0.30);
+        border-radius: 10px;
+        padding: 11px 14px;
+      }
+
+      .rg-banner-success {
+        font-size: 13.5px;
+        color: ${tokens.teal};
+        background: ${tokens.tealSoft};
+        border: 1px solid ${tokens.tealLine};
+        border-radius: 10px;
+        padding: 11px 14px;
+      }
+
+      @media (max-width: 1024px) {
+        .rg-left { display: none !important; }
+      }
+
+      @media (max-width: 520px) {
+        .rg-card { padding: 32px 24px !important; }
+      }
+    `}</style>
+  );
+}
+
+/* =========================================
+   LOGO
+========================================= */
+
+function Logo() {
+  return (
+    <Link
+      to="/"
+      style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}
+    >
+      <div
+        style={{
+          width: 32,
+          height: 32,
+          borderRadius: 10,
+          background: `linear-gradient(135deg, ${tokens.violet}, ${tokens.teal})`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: `0 8px 24px rgba(69,224,208,0.18)`,
+        }}
+      >
+        <Sparkles size={17} color={tokens.text} />
+      </div>
+
+      <span
+        className="rg-display"
+        style={{ fontSize: 17, fontWeight: 700, color: tokens.text, letterSpacing: "-0.02em" }}
+      >
+        AI HELPER
+      </span>
+    </Link>
+  );
+}
+
+/* =========================================
+   REGISTER
+========================================= */
 
 function Register() {
   const navigate = useNavigate();
@@ -33,10 +208,6 @@ function Register() {
     setError(null);
     setSuccess(null);
 
-    // -----------------------------
-    // FRONTEND VALIDATION
-    // -----------------------------
-
     if (form.password !== form.confirmPassword) {
       setError("Passwords don't match.");
       return;
@@ -47,45 +218,43 @@ function Register() {
       return;
     }
 
-    // -----------------------------
-    // CALL OUR API
-    // -----------------------------
-
     setLoading(true);
 
     try {
-      const res = await register(
-        form.name,
-        form.email,
-        form.password
-      );
+      const res = await register(form.name, form.email, form.password);
 
       console.log("Register response:", res);
-
-      // -----------------------------
-      // CHECK API RESPONSE
-      // -----------------------------
 
       if (!res.success) {
         setError(res.message);
         return;
       }
 
-      // -----------------------------
-      // REGISTRATION SUCCESS
-      // -----------------------------
+      const auth = await login(form.email, form.password);
+
+      if (!auth.success || !auth.access || !auth.refresh) {
+        setError("Account created, but automatic login failed. Please log in.");
+        return;
+      }
+
+      localStorage.setItem("accessToken", auth.access);
+      localStorage.setItem("refreshToken", auth.refresh);
+      localStorage.setItem("currentUser", JSON.stringify(auth.user));
 
       setSuccess(res.message);
 
-      // Wait a little so user can see success message
       setTimeout(() => {
-        navigate("/login");
+        navigate("/");
       }, 1000);
 
     } catch (err) {
       console.error("Registration error:", err);
 
-      setError("Couldn't create your account. Try again.");
+      setError(
+        err.response?.data?.detail ||
+        err.response?.data?.message ||
+        "Couldn't create your account. Try again."
+      );
 
     } finally {
       setLoading(false);
@@ -93,180 +262,169 @@ function Register() {
   };
 
   return (
-    <AuthLayout
-      title="Create your account"
-      subtitle="Start your journey toward interview success."
-    >
+    <div className="rg-root" style={{ minHeight: "100vh", position: "relative", background: tokens.bg, color: tokens.text }}>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <GlobalStyle />
+      <HomeBackground tokens={tokens} />
 
-        {/* ERROR MESSAGE */}
-        {error && (
-          <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2.5">
-            {error}
-          </div>
-        )}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "40px 24px",
+        }}
+      >
 
-        {/* SUCCESS MESSAGE */}
-        {success && (
-          <div className="text-sm text-green-600 bg-green-50 border border-green-200 rounded-lg px-4 py-2.5">
-            {success}
-          </div>
-        )}
-
-        {/* Full Name */}
-        <div>
-
-          <label className="block text-sm font-semibold mb-2">
-            Full Name
-          </label>
-
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            placeholder="Enter your full name"
-            required
-            className="w-full px-4 py-3 rounded-xl border border-slate-200
-            focus:outline-none focus:ring-2 focus:ring-blue-500
-            focus:border-transparent transition"
-          />
-
-        </div>
-
-        {/* Email */}
-        <div>
-
-          <label className="block text-sm font-semibold mb-2">
-            Email Address
-          </label>
-
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="you@example.com"
-            required
-            className="w-full px-4 py-3 rounded-xl border border-slate-200
-            focus:outline-none focus:ring-2 focus:ring-blue-500
-            focus:border-transparent transition"
-          />
-
-        </div>
-
-        {/* Password */}
-        <div>
-
-          <label className="block text-sm font-semibold mb-2">
-            Password
-          </label>
-
-          <div className="relative">
-
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              placeholder="Create a password"
-              required
-              className="w-full px-4 py-3 pr-12 rounded-xl border border-slate-200
-              focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </button>
-
-          </div>
-
-        </div>
-
-        {/* Confirm Password */}
-        <div>
-
-          <label className="block text-sm font-semibold mb-2">
-            Confirm Password
-          </label>
-
-          <div className="relative">
-
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              name="confirmPassword"
-              value={form.confirmPassword}
-              onChange={handleChange}
-              placeholder="Confirm your password"
-              required
-              className="w-full px-4 py-3 pr-12 rounded-xl border border-slate-200
-              focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-
-            <button
-              type="button"
-              onClick={() =>
-                setShowConfirmPassword(!showConfirmPassword)
-              }
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
-            >
-              {showConfirmPassword ? "🙈" : "👁️"}
-            </button>
-
-          </div>
-
-        </div>
-
-        {/* Terms */}
-        <div className="flex items-start gap-2 pt-1">
-
-          <input
-            type="checkbox"
-            required
-            className="w-4 h-4 mt-1 accent-blue-600"
-          />
-
-          <p className="text-sm text-slate-500">
-            I agree to the Terms of Service and Privacy Policy.
-          </p>
-
-        </div>
-
-        {/* Register */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full py-3.5 rounded-xl bg-blue-600
-          text-white font-semibold text-lg
-          hover:bg-blue-700 hover:shadow-lg
-          hover:shadow-blue-500/30 transition duration-300
-          disabled:opacity-60 disabled:cursor-not-allowed"
+        <div
+          style={{
+            width: "100%",
+            maxWidth: 520,
+            display: "grid",
+            gridTemplateColumns: "1fr",
+            alignItems: "center",
+          }}
         >
-          {loading ? "Creating account…" : "Create Account"}
-        </button>
+          <div>
 
-      </form>
+            <div
+              className="rg-card"
+              style={{
+                background: tokens.glass,
+                backdropFilter: "blur(18px)",
+                WebkitBackdropFilter: "blur(18px)",
+                border: `1.5px solid ${tokens.border}`,
+                borderRadius: 26,
+                padding: "40px 40px 36px",
+                boxShadow: "0 30px 60px -30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08)",
+              }}
+            >
 
-      {/* Login */}
-      <p className="text-center text-sm text-slate-600 mt-7">
+              <h2 className="rg-display" style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: tokens.text }}>
+                Create your account
+              </h2>
 
-        Already have an account?{" "}
+              <p style={{ fontSize: 14, color: tokens.textMuted, lineHeight: 1.6, margin: "0 0 28px" }}>
+                Start your journey toward interview success.
+              </p>
 
-        <Link
-          to="/login"
-          className="text-blue-600 font-semibold hover:underline"
-        >
-          Login
-        </Link>
+              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
-      </p>
+                {error && <div className="rg-banner-error">{error}</div>}
+                {success && <div className="rg-banner-success">{success}</div>}
 
-    </AuthLayout>
+                <div>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: tokens.textMuted, marginBottom: 8 }}>
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="Enter your full name"
+                    required
+                    className="rg-input"
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: tokens.textMuted, marginBottom: 8 }}>
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="you@example.com"
+                    required
+                    className="rg-input"
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: tokens.textMuted, marginBottom: 8 }}>
+                    Password
+                  </label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={form.password}
+                      onChange={handleChange}
+                      placeholder="Create a password"
+                      required
+                      className="rg-input"
+                      style={{ paddingRight: 46 }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="rg-icon-btn"
+                      style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)" }}
+                    >
+                      {showPassword ? "🙈" : "👁️"}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: tokens.textMuted, marginBottom: 8 }}>
+                    Confirm Password
+                  </label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      value={form.confirmPassword}
+                      onChange={handleChange}
+                      placeholder="Confirm your password"
+                      required
+                      className="rg-input"
+                      style={{ paddingRight: 46 }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="rg-icon-btn"
+                      style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)" }}
+                    >
+                      {showConfirmPassword ? "🙈" : "👁️"}
+                    </button>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 9, paddingTop: 2 }}>
+                  <input type="checkbox" required className="rg-checkbox" style={{ marginTop: 3 }} />
+                  <p style={{ fontSize: 13, color: tokens.textMuted, margin: 0, lineHeight: 1.5 }}>
+                    I agree to the Terms of Service and Privacy Policy.
+                  </p>
+                </div>
+
+                <button type="submit" disabled={loading} className="rg-primary-btn">
+                  {loading ? "Creating account…" : "Create Account"}
+                </button>
+
+              </form>
+
+              <p style={{ textAlign: "center", fontSize: 13.5, color: tokens.textMuted, marginTop: 28 }}>
+                Already have an account?{" "}
+                <Link to="/login" className="rg-link">Login</Link>
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
   );
 }
 
