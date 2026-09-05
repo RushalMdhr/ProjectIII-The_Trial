@@ -1,6 +1,3 @@
-from django.http import HttpResponse
-
-from matplotlib import text
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -8,13 +5,10 @@ from rest_framework import status
 
 from ai.utils.embeddings import embed_text
 from ai.utils.message import assistant_talking, user_talking
-from ai.llm import ai
 from ai.utils.chats_handler import chats_handler
-from common.models import SimpleTextEmbedding
 
 from .models import ChatSession, ChatMessage
 from .serializers import ChatSessionSerializer, ChatMessageSerializer
-
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -37,8 +31,32 @@ def sessions(request):
         )
 
     if request.method == 'POST':
+
+        use_case = request.data.get(
+            'use_case',
+            'general_chat'
+        )
+
+        valid_use_cases = [
+            choice[0]
+            for choice in ChatSession.USE_CASE_CHOICES
+        ]
+
+        if use_case not in valid_use_cases:
+            return Response(
+                {
+                    'error': 'Invalid use_case.',
+                    'valid_use_cases': valid_use_cases
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        title = request.data.get(
+            'title',
+            'New Chat Session')
         session = ChatSession.objects.create(
-            user=request.user
+            user=request.user,
+            use_case=use_case,
+            title=title
         )
 
         serializer = ChatSessionSerializer(session)
@@ -47,8 +65,6 @@ def sessions(request):
             serializer.data,
             status=status.HTTP_201_CREATED
         )
-
-
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -154,6 +170,7 @@ def send_message(request):
                 user_content=user_content,
                 chat_history=chat_history,
                 context=context,
+                use_case=session.use_case,
             )
 
             assistant_content = result["assistant_content"]
@@ -292,36 +309,6 @@ def get_messages(request, session_id):
         serializer.data,
         status=status.HTTP_200_OK
     )
-
-    try:
-        session = ChatSession.objects.get(
-            id=session_id,
-            user=request.user,
-            archived=False
-        )
-    except ChatSession.DoesNotExist:
-        return Response(
-            {
-                'error': 'Chat session not found.'
-            },
-            status=status.HTTP_404_NOT_FOUND
-        )
-
-    messages = ChatMessage.objects.filter(
-        session=session,
-        user=request.user
-    ).order_by('created_at')
-
-    serializer = ChatMessageSerializer(
-        messages,
-        many=True
-    )
-
-    return Response(
-        serializer.data,
-        status=status.HTTP_200_OK
-    )
-
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
