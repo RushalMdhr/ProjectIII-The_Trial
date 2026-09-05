@@ -1,4 +1,5 @@
 from django.db import models
+from pgvector.django import VectorField
 
 
 class ChatSession(models.Model):
@@ -33,6 +34,7 @@ class ChatMessage(models.Model):
     user_content = models.TextField(blank=True, null=True)
     assistant_content = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    user_content_embedding = VectorField(dimensions=768, null=True, blank=True)
 
     def __str__(self):
         return f"Message {self.id} - Session {self.session.id}"
