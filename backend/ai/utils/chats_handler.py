@@ -1,5 +1,5 @@
-from ai.llm import ai
 from ai.utils.message import system_talking,user_talking,assistant_talking
+from ai.utils.chat_services import generate_response
 
 
 SYSTEM_PROMPT = """
@@ -23,6 +23,7 @@ def chats_handler(
     user_content,
     chat_history=None,
     context=None,
+    use_case="general_chat"
 ):
     """
     Prepare conversation context and generate an AI response.
@@ -78,9 +79,10 @@ def chats_handler(
     # -------------------------
     # Generate response
     # -------------------------
-    response = ai(msg=messages)
 
-    assistant_content = response.message.content
+    assistant_content = generate_response(
+        use_case=use_case,
+        message=messages)
 
     return {
         "user_content": user_content,
