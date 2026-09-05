@@ -163,6 +163,7 @@ def TalkToAi(request):
               ]
         res = ai(msg=msg)
 
+
         return JsonResponse({
             "success": True,
             'res' : res.message.content,
