@@ -1,7 +1,8 @@
 from ai.utils.request_ollama import ollama_client
+from .utils.request_groq import groq_client
 
 def ai(msg,model="llama3.2:latest",tools='auto'):
-    return ollama_client.chat(
+    response = ollama_client.chat(
             model=model,
             messages=msg,
             options={
@@ -13,5 +14,14 @@ def ai(msg,model="llama3.2:latest",tools='auto'):
                 # "seed": 123,             # Reproducible
                 # "mirostat": 1            # Adaptive creativity
             }
-
             )
+    return response["message"]["content"]
+
+def groq_ai(msg, model="openai/gpt-oss-120b"):
+    response = groq_client.chat.completions.create(
+        model=model,
+        messages=msg,
+        temperature=0.7,
+    )
+
+    return response.choices[0].message.content

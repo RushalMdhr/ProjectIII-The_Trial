@@ -3,15 +3,30 @@ from pgvector.django import VectorField
 
 
 class ChatSession(models.Model):
+
+    USE_CASE_CHOICES = [
+        ("general_chat", "General Chat"),
+        ("career_guidance", "Career Guidance"),
+        ("interview_assessment", "Interview Assessment"),
+    ]
+
     user = models.ForeignKey(
         'accounts.User',
         on_delete=models.CASCADE,
         related_name='chat_sessions'
     )
+
     title = models.CharField(
         max_length=255,
         default='New Chat Session'
     )
+
+    use_case = models.CharField(
+        max_length=30,
+        choices=USE_CASE_CHOICES,
+        default="general_chat"
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     archived = models.BooleanField(default=False)
