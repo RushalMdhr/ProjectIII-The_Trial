@@ -1,4 +1,5 @@
 from ai.llm import ai
+from ai.utils.message import system_talking,user_talking,assistant_talking
 
 
 SYSTEM_PROMPT = """
@@ -52,20 +53,17 @@ def chats_handler(
     # -------------------------
     # System prompt
     # -------------------------
-    syste
+    messages.append(system_talking(SYSTEM_PROMPT))
 
     # -------------------------
     # Retrieved context
     # -------------------------
     if context:
-        messages.append({
-            "role": "system",
-            "content": (
-                "Use the following context when it is relevant "
-                "to answering the user's question.\n\n"
-                f"CONTEXT:\n{context}"
-            ),
-        })
+        messages.append(system_talking(
+            "Use the following context when it is relevant "
+            "to answering the user's question.\n\n"
+            f"CONTEXT:\n{context}"
+        ))
 
     # -------------------------
     # Previous chat history
@@ -75,10 +73,7 @@ def chats_handler(
     # -------------------------
     # Current user query
     # -------------------------
-    messages.append({
-        "role": "user",
-        "content": user_content,
-    })
+    messages.append(user_talking(user_content))
 
     # -------------------------
     # Generate response

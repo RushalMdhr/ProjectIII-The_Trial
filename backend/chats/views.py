@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from ai.utils.embeddings import embed_text
-from ai.utils.message import system_talking, user_talking
+from ai.utils.message import assistant_talking, user_talking
 from ai.llm import ai
 from ai.utils.chats_handler import chats_handler
 from common.models import SimpleTextEmbedding
@@ -109,16 +109,10 @@ def send_message(request):
         for message in previous_messages:
 
             if message.user_content:
-                chat_history.append({
-                    "role": "user",
-                    "content": message.user_content,
-                })
+                chat_history.append(user_talking(message.user_content))
 
             if message.assistant_content:
-                chat_history.append({
-                    "role": "assistant",
-                    "content": message.assistant_content,
-                })
+                chat_history.append(assistant_talking(message.assistant_content))
 
         # -------------------------
         # Generate embedding
