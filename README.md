@@ -136,3 +136,6 @@ for x in objects:
 
 # Starting Django app
 py manage.py startapp app_name  
+
+# Merge migrations
+ python manage.py makemigrations --merge
