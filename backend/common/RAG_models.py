@@ -15,12 +15,13 @@ class InterviewQuestions(models.Model):
     answer = models.TextField()
     role = models.CharField(max_length=255, db_index=True)
     experience = models.CharField(max_length=50, choices=[
+        ('none', 'None'),
+        ('intern', 'Intern'),
         ('junior', 'Junior'),
         ('mid_level', 'Mid-level'),
-        ('senior', 'Senior')
-    ],
-    db_index=True
-    )
+        ('senior', 'Senior'),
+        ('any', 'Any')
+    ],db_index=True)
     difficulty = models.CharField(max_length=50, choices=[
         ('easy', 'Easy'),
         ('medium', 'Medium'),

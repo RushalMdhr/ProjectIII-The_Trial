@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import *
 from ai.utils.embeddings import embed_text
-from ai.llm import ai
+from ai.llm import ollama_ai
 
 
 def health_check(request):
@@ -159,9 +159,25 @@ def TalkToAi(request):
             {
                 'role':'user',
                 'content' : text
-            }
+            },
+            {
+                'role':'assistent',
+                'content' : text
+            },
+            {
+                'role':'user',
+                'content' : text
+            },
+            {
+                'role':'user',
+                'content' : text
+            },
+            {
+                'role':'user',
+                'content' : text
+            },
               ]
-        res = ai(msg=msg)
+        res = ollama_ai(msg=msg)
 
 
         return JsonResponse({
@@ -175,3 +191,4 @@ def TalkToAi(request):
             "success": False,
             "error": str(e)
         }, status=500)
+
