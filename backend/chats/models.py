@@ -27,6 +27,16 @@ class ChatSession(models.Model):
         default="general_chat"
     )
 
+    interview_difficulty = models.CharField(
+        max_length=10,
+        choices=(
+            ("easy", "Easy"),
+            ("medium", "Medium"),
+            ("hard", "Hard"),
+        ),
+        default="medium",
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     archived = models.BooleanField(default=False)
@@ -53,3 +63,23 @@ class ChatMessage(models.Model):
 
     def __str__(self):
         return f"Message {self.id} - Session {self.session.id}"
+
+
+class InterviewEvaluation(models.Model):
+    session = models.ForeignKey(
+        ChatSession,
+        on_delete=models.CASCADE,
+        related_name="interview_evaluations",
+    )
+    message = models.OneToOneField(
+        ChatMessage,
+        on_delete=models.CASCADE,
+        related_name="interview_evaluation",
+    )
+    score = models.PositiveSmallIntegerField()
+    difficulty = models.CharField(max_length=10)
+    feedback = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Interview evaluation {self.id}: {self.score}/10"

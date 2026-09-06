@@ -1,11 +1,9 @@
 
-import sys
-
-from .connection import get_db_cursor
-sys.path.append(r'D:\Rushal\VS_code\Python\ProjectIII\backend')
+from common.RAG_models import InterviewQuestions
+from pgvector.django import CosineDistance
 from ai.utils.embeddings import embed_text_local
 
-def relevant_context(user_query, top_k=5):
+def relevant_context(user_query, difficulty=None, top_k=1):
     """
     Retrieve relevant context from the database based on the user's query.
     
@@ -16,31 +14,30 @@ def relevant_context(user_query, top_k=5):
     Returns:
         list: A list of relevant context strings.
     """
-    # Connect to the database
-    with get_db_cursor() as cur:
-        # Step 1: Generate embedding for the user query
-        query_embedding = embed_text_local(user_query)
-        
-        if query_embedding is None:
-            print("⚠️ Failed to generate embedding for the user query.")
-            return []
-        
-        # Step 2: Retrieve relevant context from the database
-        select_query = """
-            SELECT question, answer, role, experience, difficulty, keywords
-            FROM common_interviewquestions
-            ORDER BY embedding <-> %s ::vector
-            LIMIT 5
-        """
-        
-        cur.execute(select_query, (query_embedding,))
-        results = cur.fetchall()
-        
-        # Step 3: Format the results into a list of context strings
-        context_list = []
-        for row in results:
-            question, answer, role, experience, difficulty, keywords = row
-            context_str = f"Question: {question}\nIdeal_Answer: {answer}\nRole: {role}, Experience: {experience}, Difficulty: {difficulty}, Keywords: {keywords}"
-            context_list.append(context_str)
-        
-        return context_list
+    query_embedding = embed_text_local(user_query)
+    if query_embedding is None:
+        return []
+
+    questions = InterviewQuestions.objects.exclude(
+        embedding=None
+    )
+    if difficulty in {"easy", "medium", "hard"}:
+        questions = questions.filter(difficulty=difficulty)
+
+    questions = questions.annotate(
+        distance=CosineDistance("embedding", query_embedding)
+    ).order_by("distance")[:top_k]
+
+    print(f"questions \n ===============\n {questions}",flush=True)
+    return [
+        {
+            "id": question.id,
+            "question": question.question,
+            "ideal_answer": question.answer,
+            "role": question.role,
+            "experience": question.experience,
+            "difficulty": question.difficulty,
+            "keywords": question.keywords,
+        }
+        for question in questions
+    ]

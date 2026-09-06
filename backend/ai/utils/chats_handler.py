@@ -1,3 +1,6 @@
+import json
+import re
+
 from ai.utils.message import system_talking,user_talking,assistant_talking
 from ai.utils.chat_services import generate_response
 
@@ -951,7 +954,67 @@ Your primary objective is to determine:
 
 """,
 }
+# interview_assessment
 
+def evaluate_interview_answer(question, answer, ideal_answer=""):
+    print(f"\n=========================================================\nEvaluating answer for question: {question}\nCandidate answer: {answer}\nIdeal answer: {ideal_answer}",flush=True)
+    prompt = f"""
+Evaluate the candidate's answer to one interview question.
+Return ONLY valid JSON with exactly these keys:
+{{"score": 0, "feedback": "brief evidence-based feedback"}}
+
+Score from 0 to 10. Use 0 only when the answer is irrelevant, intentionally
+non-responsive, or clearly joking. Judge only the answer's relevance,
+accuracy, reasoning, and communication for the question. Do not penalize
+minor grammar errors or accent.
+
+Question:
+{question}
+
+Reference answer (use as guidance, not as a required script):
+{ideal_answer}
+
+Candidate answer:
+{answer}
+"""
+    raw = str(generate_response(
+        use_case="general_chat",
+        message=[system_talking(prompt)],
+    )).strip()
+    print(f"raw : {raw}",flush=True)
+    match = re.search(r"\{.*\}", raw, re.DOTALL)
+    if not match:
+        return {"score": 0, "feedback": "The answer was recorded for review."}
+
+    try:
+        result = json.loads(match.group(0))
+        score = max(0, min(10, int(result.get("score", 5))))
+        return {
+            "score": score, 
+            "feedback": str(result.get("feedback", "")).strip(),
+        }
+    except (TypeError, ValueError, json.JSONDecodeError):
+        return {"score": 5, "feedback": "The answer was recorded for review."}
+
+
+def profile_interview_context(profile):
+    fields = {
+        "primary_role": profile.primary_role,
+        "target_role": profile.target_role,
+        "experience_level": profile.experience_level,
+        "education": profile.education,
+        "skills": profile.skills,
+        "projects": profile.projects,
+        "experience": profile.experience,
+        "certifications": profile.certifications,
+    }
+    missing = [name for name, value in fields.items() if not value]
+    return (
+        f"CANDIDATE PROFILE:\n{json.dumps(fields, default=str)}\n\n"
+        f"MISSING PROFILE FIELDS: {', '.join(missing) or 'none'}\n"
+        "If a relevant profile field is missing, ask one concise question "
+        "to fill that gap before moving to technical assessment."
+    )
 
 def chats_handler(
     user_content,
