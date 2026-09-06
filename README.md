@@ -138,4 +138,12 @@ for x in objects:
 py manage.py startapp app_name  
 
 # Merge migrations
+
+ ```bash
  python manage.py makemigrations --merge
+```
+
+# Vector Error ??
+### tyo vector error aayema you have to do create extension 
+### which can eaily be done by just running all in Vector_Extension_Handler.ipynb
+### ctrl + p "search name : Vecto..." enter and run all
