@@ -6,6 +6,6 @@ def generate_response(use_case,message):
     elif use_case == "career_guidance":
         return groq_ai(message)
     elif use_case == "interview_assessment":
-        return ai(message)
+        return groq_ai(message)
 
     raise ValueError(f"Unknown use case: {use_case}")
