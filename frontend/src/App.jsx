@@ -10,12 +10,11 @@ import Interview from "./pages/Interview";
 import Results from "./pages/Results";
 import Test from "./pages/test";
 import AskQuestion from "./pages/AskQuestion";
+import UserProfile from "./pages/UserProfile";
 function App() {
   return (
     <BrowserRouter>
-
       <div className="app-layout">
-
         <Navbar />
 
         <main className="app-content">
@@ -23,6 +22,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<UserProfile />} />
             <Route path="/interview-setup" element={<InterviewSetup />} />
             <Route path="/interview" element={<Interview />} />
             <Route path="/test" element={<Test />} />
@@ -30,10 +30,7 @@ function App() {
             <Route path="/ask-question" element={<AskQuestion />} />
           </Routes>
         </main>
-
-
       </div>
-
     </BrowserRouter>
   );
 }
