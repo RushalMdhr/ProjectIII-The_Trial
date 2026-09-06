@@ -4,6 +4,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
 from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
+from .models import UserProfile
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from authlib.integrations.django_client import OAuth
@@ -133,6 +134,7 @@ def test_connect(request):
 
 @api_view(['POST'])
 def register_account(request):
+
     name = request.data.get('name') or request.data.get('first_name') or ''
     email = request.data.get('email')
     password = request.data.get('password')
@@ -151,9 +153,14 @@ def register_account(request):
             'message': 'Email already exists.'
         }, status=400)
 
+    # Get optional profile data
+    profile_data = request.data.get('profile') or {}
+
+    # Generate unique username
     username_base = email.split('@', 1)[0][:150] or 'user'
     username = username_base
     suffix = 1
+
     while User.objects.filter(username=username).exists():
         suffix_text = str(suffix)
         username = f'{username_base[:150 - len(suffix_text)]}{suffix_text}'
@@ -167,6 +174,19 @@ def register_account(request):
         first_name=name
     )
 
+    # Create profile
+    UserProfile.objects.create(
+        user=user,
+        primary_role=profile_data.get('primary_role', ''),
+        target_role=profile_data.get('target_role', ''),
+        experience_level=profile_data.get('experience_level', ''),
+        education=profile_data.get('education', []),
+        skills=profile_data.get('skills', []),
+        projects=profile_data.get('projects', []),
+        experience=profile_data.get('experience', []),
+        certifications=profile_data.get('certifications', [])
+    )
+
     return Response({
         'success': True,
         'message': 'Account created successfully.',
@@ -175,6 +195,16 @@ def register_account(request):
             'username': user.username,
             'email': user.email,
             'first_name': user.first_name
+        },
+        'profile': {
+            'primary_role': profile_data.get('primary_role', ''),
+            'target_role': profile_data.get('target_role', ''),
+            'experience_level': profile_data.get('experience_level', ''),
+            'education': profile_data.get('education', []),
+            'skills': profile_data.get('skills', []),
+            'projects': profile_data.get('projects', []),
+            'experience': profile_data.get('experience', []),
+            'certifications': profile_data.get('certifications', [])
         }
     }, status=201)
 
@@ -208,4 +238,91 @@ def login_account(request):
         },
         'access': str(refresh.access_token),
         'refresh': str(refresh),
+    })
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_profile(request):
+
+    profile, created = UserProfile.objects.get_or_create(
+        user=request.user
+    )
+
+    return Response({
+        'success': True,
+        'profile': {
+            'primary_role': profile.primary_role,
+            'target_role': profile.target_role,
+            'experience_level': profile.experience_level,
+            'education': profile.education,
+            'skills': profile.skills,
+            'projects': profile.projects,
+            'experience': profile.experience,
+            'certifications': profile.certifications,
+        }
+    })
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def update_profile(request):
+
+    profile, created = UserProfile.objects.get_or_create(
+        user=request.user
+    )
+
+    profile.primary_role = request.data.get(
+        'primary_role',
+        profile.primary_role
+    )
+
+    profile.target_role = request.data.get(
+        'target_role',
+        profile.target_role
+    )
+
+    profile.experience_level = request.data.get(
+        'experience_level',
+        profile.experience_level
+    )
+
+    profile.education = request.data.get(
+        'education',
+        profile.education
+    )
+
+    profile.skills = request.data.get(
+        'skills',
+        profile.skills
+    )
+
+    profile.projects = request.data.get(
+        'projects',
+        profile.projects
+    )
+
+    profile.experience = request.data.get(
+        'experience',
+        profile.experience
+    )
+
+    profile.certifications = request.data.get(
+        'certifications',
+        profile.certifications
+    )
+
+    profile.save()
+
+    return Response({
+        'success': True,
+        'message': 'Profile updated successfully.',
+        'profile': {
+            'primary_role': profile.primary_role,
+            'target_role': profile.target_role,
+            'experience_level': profile.experience_level,
+            'education': profile.education,
+            'skills': profile.skills,
+            'projects': profile.projects,
+            'experience': profile.experience,
+            'certifications': profile.certifications,
+        }
     })

@@ -1,0 +1,707 @@
+/* =========================================
+   USER PROFILE
+========================================= */
+
+.profile-page {
+  width: min(1000px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 70px 0 100px;
+
+  color: #FBFAFF;
+  font-family: "Inter", sans-serif;
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.profile-hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 22px;
+
+  margin-bottom: 42px;
+}
+
+.profile-hero-icon {
+  width: 58px;
+  height: 58px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(69, 224, 208, 0.16),
+      rgba(139, 124, 246, 0.16)
+    );
+
+  border: 1px solid rgba(69, 224, 208, 0.25);
+
+  color: #45E0D0;
+
+  font-size: 24px;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.profile-eyebrow {
+  margin: 3px 0 8px;
+
+  color: #45E0D0;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+}
+
+.profile-hero h1 {
+  margin: 0;
+
+  font-family: "Space Grotesk", sans-serif;
+
+  font-size: clamp(32px, 5vw, 46px);
+
+  line-height: 1.08;
+
+  letter-spacing: -0.03em;
+}
+
+.profile-hero h1 span {
+  color: #45E0D0;
+}
+
+.profile-description {
+  max-width: 650px;
+
+  margin: 13px 0 0;
+
+  color: #AEB1D5;
+
+  font-size: 13.5px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+.profile-card {
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.035)
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.11);
+
+  border-radius: 18px;
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  box-shadow:
+    0 20px 50px rgba(10, 12, 35, 0.16);
+
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.profile-card:hover {
+  border-color: rgba(69, 224, 208, 0.18);
+
+  box-shadow:
+    0 25px 55px rgba(10, 12, 35, 0.22);
+}
+
+
+/* =========================================
+   CARD HEADER
+========================================= */
+
+.profile-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 22px 24px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.profile-card-title {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+}
+
+.profile-card-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  border-radius: 9px;
+
+  color: #45E0D0;
+
+  background: rgba(69, 224, 208, 0.09);
+
+  border: 1px solid rgba(69, 224, 208, 0.17);
+
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 10px;
+}
+
+.profile-card-header h2 {
+  margin: 0;
+
+  color: #FBFAFF;
+
+  font-family: "Space Grotesk", sans-serif;
+
+  font-size: 17px;
+}
+
+.profile-card-header p {
+  margin: 4px 0 0;
+
+  color: #8F92BD;
+
+  font-size: 11.5px;
+}
+
+
+/* =========================================
+   CARD CONTENT
+========================================= */
+
+.profile-card-content {
+  padding: 24px;
+}
+
+
+/* =========================================
+   GRID
+========================================= */
+
+.profile-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 20px;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.profile-field label {
+  color: #C2C4EC;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  letter-spacing: 0.02em;
+}
+
+.profile-field input,
+.profile-field select,
+.repeatable-item input,
+.skill-item input {
+  width: 100%;
+  height: 48px;
+
+  padding: 0 14px;
+
+  outline: none;
+
+  border: 1px solid rgba(255, 255, 255, 0.11);
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.055);
+
+  color: #FBFAFF;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 13px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.profile-field input::placeholder,
+.repeatable-item input::placeholder,
+.skill-item input::placeholder {
+  color: #74779F;
+}
+
+.profile-field input:focus,
+.profile-field select:focus,
+.repeatable-item input:focus,
+.skill-item input:focus {
+  border-color: rgba(69, 224, 208, 0.55);
+
+  background: rgba(69, 224, 208, 0.045);
+
+  box-shadow:
+    0 0 0 3px rgba(69, 224, 208, 0.07);
+}
+
+.profile-field select option {
+  background: #242852;
+  color: #FBFAFF;
+}
+
+
+/* =========================================
+   ADD BUTTON
+========================================= */
+
+.profile-add-button {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  height: 34px;
+
+  padding: 0 12px;
+
+  border-radius: 8px;
+
+  border: 1px solid rgba(69, 224, 208, 0.24);
+
+  background: rgba(69, 224, 208, 0.07);
+
+  color: #45E0D0;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.profile-add-button span {
+  font-size: 17px;
+  line-height: 1;
+}
+
+.profile-add-button:hover {
+  background: rgba(69, 224, 208, 0.14);
+
+  border-color: rgba(69, 224, 208, 0.4);
+}
+
+
+/* =========================================
+   REPEATABLE ITEMS
+========================================= */
+
+.repeatable-list,
+.skill-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.repeatable-item,
+.skill-item {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.repeatable-index,
+.skill-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  color: #8F92BD;
+
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 9px;
+}
+
+.repeatable-item input,
+.skill-item input {
+  flex: 1;
+}
+
+
+/* =========================================
+   REMOVE BUTTON
+========================================= */
+
+.profile-remove-button {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  border: 1px solid rgba(255, 120, 120, 0.12);
+
+  border-radius: 8px;
+
+  background: rgba(255, 100, 100, 0.05);
+
+  color: #A9AAC6;
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.profile-remove-button:hover {
+  color: #FF9F9F;
+
+  background: rgba(255, 100, 100, 0.1);
+
+  border-color: rgba(255, 120, 120, 0.25);
+}
+
+
+/* =========================================
+   EMPTY
+========================================= */
+
+.profile-empty {
+  min-height: 90px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+
+  border-radius: 12px;
+
+  color: #74779F;
+
+  text-align: center;
+}
+
+.profile-empty span {
+  color: #45E0D0;
+
+  font-size: 18px;
+}
+
+.profile-empty p {
+  margin: 0;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   SAVE
+========================================= */
+
+.profile-save {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-top: 10px;
+
+  padding: 18px 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.09);
+
+  border-radius: 14px;
+
+  background: rgba(20, 23, 55, 0.38);
+
+  backdrop-filter: blur(15px);
+}
+
+.profile-save-info {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+}
+
+.save-dot {
+  width: 8px;
+  height: 8px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #45E0D0;
+
+  box-shadow:
+    0 0 12px rgba(69, 224, 208, 0.65);
+}
+
+.profile-save-info strong {
+  display: block;
+
+  color: #FBFAFF;
+
+  font-size: 11px;
+}
+
+.profile-save-info p {
+  margin: 3px 0 0;
+
+  color: #777AA3;
+
+  font-size: 10px;
+}
+
+
+/* =========================================
+   SAVE BUTTON
+========================================= */
+
+.profile-save-button {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  height: 44px;
+
+  padding: 0 17px;
+
+  border: 1px solid rgba(69, 224, 208, 0.4);
+
+  border-radius: 10px;
+
+  background: #45E0D0;
+
+  color: #172242;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.profile-save-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 25px rgba(69, 224, 208, 0.22);
+}
+
+.profile-save-button span {
+  font-size: 17px;
+}
+
+.profile-save-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.65;
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.profile-message {
+  padding: 12px 15px;
+
+  border-radius: 9px;
+
+  font-size: 12px;
+
+  text-align: center;
+}
+
+.profile-message.success {
+  color: #45E0D0;
+
+  background: rgba(69, 224, 208, 0.08);
+
+  border: 1px solid rgba(69, 224, 208, 0.16);
+}
+
+.profile-message.error {
+  color: #FFB3A7;
+
+  background: rgba(255, 100, 100, 0.07);
+
+  border: 1px solid rgba(255, 100, 100, 0.15);
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.profile-loading {
+  min-height: 70vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  gap: 14px;
+
+  color: #8F92BD;
+
+  font-size: 12px;
+}
+
+.profile-loader {
+  width: 26px;
+  height: 26px;
+
+  border: 2px solid rgba(69, 224, 208, 0.15);
+
+  border-top-color: #45E0D0;
+
+  border-radius: 50%;
+
+  animation: profile-spin 0.8s linear infinite;
+}
+
+@keyframes profile-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 700px) {
+
+  .profile-page {
+    width: calc(100% - 28px);
+
+    padding: 45px 0 70px;
+  }
+
+  .profile-hero {
+    gap: 14px;
+
+    margin-bottom: 28px;
+  }
+
+  .profile-hero-icon {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 13px;
+
+    font-size: 18px;
+  }
+
+  .profile-hero h1 {
+    font-size: 30px;
+  }
+
+  .profile-description {
+    font-size: 12px;
+  }
+
+  .profile-card-header {
+    padding: 18px;
+  }
+
+  .profile-card-content {
+    padding: 18px;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-save {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .profile-save-button {
+    justify-content: center;
+
+    width: 100%;
+  }
+}
