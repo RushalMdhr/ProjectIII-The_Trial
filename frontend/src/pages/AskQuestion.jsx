@@ -16,6 +16,7 @@ import {
   getChatSessions,
   sendChatMessage,
 } from "../services/api";
+import ReactMarkdown from "react-markdown";
 
 export default function AskQuestion() {
   const navigate = useNavigate();
@@ -36,7 +37,10 @@ export default function AskQuestion() {
         const sessionList = await getChatSessions();
         setSessions(Array.isArray(sessionList) ? sessionList : []);
       } catch (requestError) {
-        setError(requestError.response?.data?.detail || "Could not load chat sessions.");
+        setError(
+          requestError.response?.data?.detail ||
+            "Could not load chat sessions.",
+        );
       } finally {
         setIsLoadingSessions(false);
       }
@@ -59,22 +63,27 @@ export default function AskQuestion() {
 
     try {
       const history = await getChatMessages(session.id);
-      const formattedMessages = history.flatMap((message) => [
-        message.user_content && {
-          id: `user-${message.id}`,
-          role: "user",
-          content: message.user_content,
-        },
-        message.assistant_content && {
-          id: `assistant-${message.id}`,
-          role: "assistant",
-          content: message.assistant_content,
-        },
-      ]).filter(Boolean);
+      const formattedMessages = history
+        .flatMap((message) => [
+          message.user_content && {
+            id: `user-${message.id}`,
+            role: "user",
+            content: message.user_content,
+          },
+          message.assistant_content && {
+            id: `assistant-${message.id}`,
+            role: "assistant",
+            content: message.assistant_content,
+          },
+        ])
+        .filter(Boolean);
 
       setMessages(formattedMessages);
     } catch (requestError) {
-      setError(requestError.response?.data?.error || "Could not load this conversation.");
+      setError(
+        requestError.response?.data?.error ||
+          "Could not load this conversation.",
+      );
     } finally {
       setIsLoadingMessages(false);
     }
@@ -96,23 +105,40 @@ export default function AskQuestion() {
 
     setMessages((current) => [
       ...current,
-      { id: `user-${Date.now()}`, role: "user", content: question },
+      {
+        id: `user-${Date.now()}`,
+        role: "user",
+        content: question,
+      },
     ]);
+
     setInput("");
     setError("");
     setIsSending(true);
 
     try {
-      let activeSessionId = sessionId;
+      // sessionId can be null for a new chat
+      const response = await sendChatMessage(question, sessionId);
 
-      if (!activeSessionId) {
-        const session = await createChatSession();
-        activeSessionId = session.id;
-        setSessionId(activeSessionId);
-        setSessions((current) => [session, ...current]);
+      // Get the session returned by Django
+      if (response.session) {
+        setSessionId(response.session.id);
+
+        setSessions((current) => {
+          const exists = current.some(
+            (session) => session.id === response.session.id,
+          );
+
+          if (exists) {
+            return current.map((session) =>
+              session.id === response.session.id ? response.session : session,
+            );
+          }
+
+          return [response.session, ...current];
+        });
       }
 
-      const response = await sendChatMessage(question, activeSessionId);
       const message = response.message;
 
       if (message?.assistant_content) {
@@ -125,28 +151,44 @@ export default function AskQuestion() {
           },
         ]);
       } else {
-        setError(response.error || "The backend did not return an assistant reply.");
+        setError(
+          response.error || "The backend did not return an assistant reply.",
+        );
       }
     } catch (requestError) {
       const message = requestError.response?.data?.error;
-      setError(message || "The assistant could not answer right now. Please try again.");
+
+      setError(
+        message ||
+          "The assistant could not answer right now. Please try again.",
+      );
     } finally {
       setIsSending(false);
     }
   };
 
   return (
-    <div className={`ask-page ${isSidebarOpen ? "sidebar-open" : "sidebar-closed"}`}>
+    <div
+      className={`ask-page ${isSidebarOpen ? "sidebar-open" : "sidebar-closed"}`}
+    >
       <aside className="chat-sidebar" aria-label="Chat sessions">
         <div className="chat-sidebar-header">
           {isSidebarOpen && <span>Chats</span>}
           <button
             className="chat-sidebar-toggle"
             onClick={() => setIsSidebarOpen((current) => !current)}
-            aria-label={isSidebarOpen ? "Collapse chat sessions" : "Expand chat sessions"}
-            title={isSidebarOpen ? "Collapse chat sessions" : "Expand chat sessions"}
+            aria-label={
+              isSidebarOpen ? "Collapse chat sessions" : "Expand chat sessions"
+            }
+            title={
+              isSidebarOpen ? "Collapse chat sessions" : "Expand chat sessions"
+            }
           >
-            {isSidebarOpen ? <ChevronLeft size={17} /> : <ChevronRight size={17} />}
+            {isSidebarOpen ? (
+              <ChevronLeft size={17} />
+            ) : (
+              <ChevronRight size={17} />
+            )}
           </button>
         </div>
 
@@ -162,7 +204,9 @@ export default function AskQuestion() {
 
         {isSidebarOpen && (
           <div className="chat-session-list">
-            {isLoadingSessions && <div className="chat-sidebar-status">Loading chats...</div>}
+            {isLoadingSessions && (
+              <div className="chat-sidebar-status">Loading chats...</div>
+            )}
             {!isLoadingSessions && !sessions.length && (
               <div className="chat-sidebar-status">No chats yet</div>
             )}
@@ -186,15 +230,11 @@ export default function AskQuestion() {
       ========================= */}
 
       <div className="ask-topbar">
-        <button
-          className="ask-back"
-          onClick={() => navigate("/")}
-        >
+        <button className="ask-back" onClick={() => navigate("/")}>
           <ArrowLeft size={16} />
           Back to Home
         </button>
       </div>
-
 
       {/* =========================
           MAIN AREA
@@ -214,11 +254,18 @@ export default function AskQuestion() {
           </div>
         )}
 
-        <section className={`ask-messages ${messages.length ? "has-messages" : ""}`} aria-live="polite">
+        <section
+          className={`ask-messages ${messages.length ? "has-messages" : ""}`}
+          aria-live="polite"
+        >
           {!messages.length && !isLoadingMessages && (
             <div className="ask-empty">
               <Bot size={18} />
-              <span>{sessionId ? "This conversation has no messages yet." : "Start a new conversation."}</span>
+              <span>
+                {sessionId
+                  ? "This conversation has no messages yet."
+                  : "Start a new conversation."}
+              </span>
             </div>
           )}
 
@@ -231,21 +278,35 @@ export default function AskQuestion() {
 
           {messages.map((message) => (
             <div className={`ask-message-row ${message.role}`} key={message.id}>
-              {message.role === "assistant" && <div className="ask-avatar"><Bot size={16} /></div>}
-              <div className="ask-bubble">{message.content}</div>
+              {message.role === "assistant" && (
+                <div className="ask-avatar">
+                  <Bot size={16} />
+                </div>
+              )}
+              <div className="ask-bubble">
+                <ReactMarkdown>{message.content}</ReactMarkdown>
+              </div>
             </div>
           ))}
 
           {isSending && (
             <div className="ask-message-row assistant">
-              <div className="ask-avatar"><Bot size={16} /></div>
-              <div className="ask-bubble ask-typing"><LoaderCircle size={15} /> Thinking...</div>
+              <div className="ask-avatar">
+                <Bot size={16} />
+              </div>
+              <div className="ask-bubble ask-typing">
+                <LoaderCircle size={15} /> Thinking...
+              </div>
             </div>
           )}
           <div ref={messagesEndRef} />
         </section>
 
-        {error && <div className="ask-error" role="alert">{error}</div>}
+        {error && (
+          <div className="ask-error" role="alert">
+            {error}
+          </div>
+        )}
 
         <div className="ask-input-area">
           <div className="ask-input-box">
@@ -264,16 +325,13 @@ export default function AskQuestion() {
             />
 
             <button
-              className={`ask-send ${
-                input.trim() ? "active" : ""
-              }`}
+              className={`ask-send ${input.trim() ? "active" : ""}`}
               onClick={handleSend}
               disabled={!input.trim() || isSending}
               aria-label="Send question"
             >
               <Send size={17} />
             </button>
-
           </div>
 
           <div className="ask-disclaimer">
@@ -282,12 +340,8 @@ export default function AskQuestion() {
               AI Helper can make mistakes. Verify important information.
             </span>
           </div>
-
         </div>
-
       </main>
-
     </div>
   );
 }
-
