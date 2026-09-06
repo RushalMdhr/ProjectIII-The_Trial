@@ -51,12 +51,17 @@ export async function askQuestion(question) {
 // CHAT SESSIONS
 // =====================================================
 
-export async function createChatSession(title = "New Chat Session") {
+export async function createChatSession(
+  title = "New Chat Session",
+  useCase = "general_chat",
+  interviewDifficulty = "medium",
+) {
   const res = await client.post(
     "/chats/session/",
     {
       title,
-      use_case: "general_chat",
+      use_case: useCase,
+      interview_difficulty: interviewDifficulty,
     }
   );
 
