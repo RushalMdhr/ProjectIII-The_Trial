@@ -6,6 +6,7 @@ import {
   Wind,
   Zap,
 } from "lucide-react";
+import { createChatSession } from "../services/api";
 
 const DIFFICULTIES = [
   {
@@ -46,6 +47,7 @@ function DifficultyCircle({
   onHover,
   onLeave,
   onClick,
+  disabled,
 }) {
   const Icon = difficulty.icon;
   const isHovered = hovered === difficulty.id;
@@ -56,6 +58,7 @@ function DifficultyCircle({
       onClick={onClick}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
+      disabled={disabled}
       className="difficulty-button"
       style={{
         transform: isHovered
@@ -103,17 +106,38 @@ export default function InterviewSetup() {
 
   const [role, setRole] = useState("");
   const [hovered, setHovered] = useState(null);
+  const [isStarting, setIsStarting] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleDifficulty = (difficulty) => {
-    navigate("/interview", {
-      state: {
-        role,
-        level: "Mid",
-        type: "mixed",
-        difficulty: difficulty.label,
-        questionCount: difficulty.questions,
-      },
-    });
+  const handleDifficulty = async (difficulty) => {
+    if (isStarting) return;
+
+    setIsStarting(true);
+    setError("");
+
+    try {
+      const session = await createChatSession(
+        `${difficulty.label} Interview`,
+        "interview_assessment",
+        difficulty.id,
+      );
+
+      navigate("/interview", {
+        state: {
+          role,
+          difficulty: difficulty.label,
+          questionCount: difficulty.questions,
+          sessionId: session.id,
+        },
+      });
+    } catch (requestError) {
+      setError(
+        requestError.response?.data?.error ||
+          "Could not start the interview. Please try again.",
+      );
+    } finally {
+      setIsStarting(false);
+    }
   };
 
   return (
@@ -202,6 +226,17 @@ export default function InterviewSetup() {
           background: transparent;
           cursor: pointer;
           transition: transform 0.25s ease;
+        }
+
+        .difficulty-button:disabled {
+          cursor: wait;
+          opacity: 0.65;
+        }
+
+        .setup-error {
+          margin: 28px auto 0;
+          color: #F88B85;
+          font-size: 13px;
         }
 
         .difficulty-outer {
@@ -305,10 +340,13 @@ export default function InterviewSetup() {
                   onHover={() => setHovered(difficulty.id)}
                   onLeave={() => setHovered(null)}
                   onClick={() => handleDifficulty(difficulty)}
+                  disabled={isStarting}
                 />
               ))}
 
           </div>
+
+          {error && <p className="setup-error">{error}</p>}
 
         </div>
 
