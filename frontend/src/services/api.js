@@ -48,6 +48,59 @@ export async function askQuestion(question) {
 
 
 // =====================================================
+// CHAT SESSIONS
+// =====================================================
+
+export async function createChatSession(title = "New Chat Session") {
+  const res = await client.post(
+    "/chats/session/",
+    {
+      title,
+      use_case: "general_chat",
+    }
+  );
+
+  return res.data;
+}
+
+
+export async function getChatSessions() {
+  const res = await client.get(
+    "/chats/session/"
+  );
+
+  return res.data;
+}
+
+
+export async function sendChatMessage(userContent, sessionId = null) {
+  const payload = {
+    user_content: userContent,
+  };
+
+  if (sessionId) {
+    payload.session = sessionId;
+  }
+
+  const res = await client.post(
+    "/chats/message/",
+    payload
+  );
+
+  return res.data;
+}
+
+
+export async function getChatMessages(sessionId) {
+  const res = await client.get(
+    `/chats/session/${sessionId}/messages`
+  );
+
+  return res.data;
+}
+
+
+// =====================================================
 // START INTERVIEW
 // =====================================================
 
