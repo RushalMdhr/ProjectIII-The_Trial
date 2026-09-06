@@ -1026,3 +1026,53 @@ def chats_handler(
         "user_content": user_content,
         "assistant_content": assistant_content,
     }
+
+def generate_chat_title(user_content):
+    prompt = f"""
+You are a conversation title generator.
+
+Create a concise title describing the main topic of the user's message.
+
+User message:
+{user_content}
+
+Rules:
+- Return ONLY the title.
+- Return exactly one line.
+- 3 to 8 words.
+- Summarize the main topic.
+- Do not copy the user's sentence verbatim.
+- Do not include Title:, User:, Assistant:, markdown, quotes, or explanations.
+"""
+
+    raw_title = generate_response(
+        use_case="general_chat",
+        message=[system_talking(prompt)]
+    )
+
+    title = str(raw_title).strip()
+
+    # Remove role/prompt artifacts
+    title = title.replace("\r", "")
+    lines = [line.strip() for line in title.split("\n") if line.strip()]
+
+    if lines:
+        title = lines[-1]
+
+    prefixes = [
+        "title:",
+        "assistant:",
+        "assistant",
+        "user:",
+    ]
+
+    for prefix in prefixes:
+        if title.lower().startswith(prefix):
+            title = title[len(prefix):].strip()
+
+    title = title.strip(" \"'`*#:-")
+
+    # Keep it as a single line
+    title = " ".join(title.split())
+
+    return title

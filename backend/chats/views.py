@@ -5,7 +5,7 @@ from rest_framework import status
 
 from ai.utils.embeddings import embed_text
 from ai.utils.message import assistant_talking, user_talking
-from ai.utils.chats_handler import chats_handler
+from ai.utils.chats_handler import chats_handler, generate_chat_title
 
 from .models import ChatSession, ChatMessage
 from .serializers import ChatSessionSerializer, ChatMessageSerializer
@@ -110,12 +110,24 @@ def send_message(request):
 
         else:
             session = ChatSession.objects.create(
-                user=request.user
-            )
+                user=request.user)
 
-        # -------------------------
+        # Update chat title
+        if session.title == 'New Chat Session':
+
+            try:
+                session.title = generate_chat_title(user_content)
+                session.save(update_fields=['title', 'updated_at'])
+            except Exception as e:
+                print(f"Title generation error: {str(e)}", flush=True)
+
+                # Fallback if LLM title generation fails
+                session.title = "New Chat Session"
+                session.save(update_fields=['title', 'updated_at'])
+
+
         # Get chat history
-        # -------------------------
+
         previous_messages = ChatMessage.objects.filter(
             session=session
         ).order_by('created_at')
