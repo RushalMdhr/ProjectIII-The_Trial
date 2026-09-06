@@ -17,7 +17,6 @@ import {
 
 import HomeBackground from "../components/HomeBackground";
 
-
 const tokens = {
   bg: "#2B2F63",
   bgLo: "#232752",
@@ -38,7 +37,6 @@ const tokens = {
   text: "#FBFAFF",
   textMuted: "#C2C4EC",
 };
-
 
 /* =========================================
    GLOBAL STYLE
@@ -319,7 +317,6 @@ function GlobalStyle() {
   );
 }
 
-
 /* =========================================
    LOGO
 ========================================= */
@@ -345,10 +342,7 @@ function Logo() {
           boxShadow: `0 8px 24px rgba(69,224,208,0.18)`,
         }}
       >
-        <Sparkles
-          size={17}
-          color={tokens.text}
-        />
+        <Sparkles size={17} color={tokens.text} />
       </div>
 
       <span
@@ -366,13 +360,11 @@ function Logo() {
   );
 }
 
-
 /* =========================================
    CONSTELLATION
 ========================================= */
 
 function Constellation() {
-
   const dots = [
     [8, 15],
     [22, 55],
@@ -416,19 +408,11 @@ function Constellation() {
   );
 }
 
-
 /* =========================================
    READINESS RING
 ========================================= */
 
-function ReadinessRing({
-  icon: Icon,
-  accent,
-  pct,
-  hoverPct,
-  size = 76,
-}) {
-
+function ReadinessRing({ icon: Icon, accent, pct, hoverPct, size = 76 }) {
   const r = size === 76 ? 30 : 22;
   const c = 2 * Math.PI * r;
 
@@ -445,7 +429,6 @@ function ReadinessRing({
         height: size,
       }}
     >
-
       <svg
         width={size}
         height={size}
@@ -454,7 +437,6 @@ function ReadinessRing({
           transform: "rotate(-90deg)",
         }}
       >
-
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -480,7 +462,6 @@ function ReadinessRing({
             transition: "stroke-dashoffset 0.4s ease",
           }}
         />
-
       </svg>
 
       <div
@@ -492,26 +473,17 @@ function ReadinessRing({
           justifyContent: "center",
         }}
       >
-        <Icon
-          size={size === 76 ? 26 : 18}
-          color={accent}
-        />
+        <Icon size={size === 76 ? 26 : 18} color={accent} />
       </div>
-
     </div>
   );
 }
-
 
 /* =========================================
    AI INTERVIEW CIRCLE
 ========================================= */
 
-function AiInterviewCircle({
-  onClick,
-  leaving,
-}) {
-
+function AiInterviewCircle({ onClick, leaving }) {
   return (
     <button
       onClick={onClick}
@@ -525,7 +497,6 @@ function AiInterviewCircle({
         position: "relative",
       }}
     >
-
       <div
         style={{
           position: "relative",
@@ -533,7 +504,6 @@ function AiInterviewCircle({
           height: 300,
         }}
       >
-
         {/* OUTER ORBIT */}
 
         <svg
@@ -546,7 +516,6 @@ function AiInterviewCircle({
             inset: 0,
           }}
         >
-
           <circle
             cx="150"
             cy="150"
@@ -557,9 +526,7 @@ function AiInterviewCircle({
             strokeDasharray="2 10"
             strokeLinecap="round"
           />
-
         </svg>
-
 
         {/* MIDDLE ORBIT */}
 
@@ -573,7 +540,6 @@ function AiInterviewCircle({
             inset: 0,
           }}
         >
-
           <circle
             cx="150"
             cy="150"
@@ -599,9 +565,7 @@ function AiInterviewCircle({
             strokeWidth="2.5"
             strokeLinecap="round"
           />
-
         </svg>
-
 
         {/* GOLD SATELLITE */}
 
@@ -612,7 +576,6 @@ function AiInterviewCircle({
             inset: 0,
           }}
         >
-
           <div
             style={{
               position: "absolute",
@@ -626,9 +589,7 @@ function AiInterviewCircle({
               boxShadow: `0 0 12px 2px ${tokens.gold}`,
             }}
           />
-
         </div>
-
 
         {/* TEAL SATELLITE */}
 
@@ -639,7 +600,6 @@ function AiInterviewCircle({
             inset: 0,
           }}
         >
-
           <div
             style={{
               position: "absolute",
@@ -652,9 +612,7 @@ function AiInterviewCircle({
               boxShadow: `0 0 10px 2px ${tokens.teal}`,
             }}
           />
-
         </div>
-
 
         {/* MAIN CIRCLE */}
 
@@ -664,8 +622,7 @@ function AiInterviewCircle({
             position: "absolute",
             inset: 40,
             borderRadius: "50%",
-            background:
-              `linear-gradient(150deg, ${tokens.violet}, #6f5fe0 45%, ${tokens.bgLo})`,
+            background: `linear-gradient(150deg, ${tokens.violet}, #6f5fe0 45%, ${tokens.bgLo})`,
             border: "1.5px solid rgba(255,255,255,0.25)",
             display: "flex",
             flexDirection: "column",
@@ -675,11 +632,7 @@ function AiInterviewCircle({
             gap: 6,
           }}
         >
-
-          <Sparkles
-            size={22}
-            color={tokens.gold}
-          />
+          <Sparkles size={22} color={tokens.gold} />
 
           <span
             className="cp-display"
@@ -704,20 +657,12 @@ function AiInterviewCircle({
             Tap to begin
           </span>
 
-          <ArrowDown
-            size={14}
-            color={tokens.gold}
-            className="cp-bounce"
-          />
-
+          <ArrowDown size={14} color={tokens.gold} className="cp-bounce" />
         </div>
-
       </div>
-
     </button>
   );
 }
-
 
 /* =========================================
    OPTION CARD
@@ -737,7 +682,6 @@ function OptionCard({
   bullets,
   onClick,
 }) {
-
   return (
     <div
       className="cp-card-wrap"
@@ -749,7 +693,6 @@ function OptionCard({
         minWidth: 300,
       }}
     >
-
       <button
         onClick={onClick}
         className="cp-card"
@@ -769,13 +712,11 @@ function OptionCard({
           gap: 22,
           position: "relative",
           overflow: "hidden",
-          transition:
-            "background 0.3s ease, box-shadow 0.3s ease",
+          transition: "background 0.3s ease, box-shadow 0.3s ease",
           boxShadow:
             "0 20px 40px -28px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08)",
         }}
       >
-
         {/* GLOW */}
 
         <div
@@ -786,11 +727,9 @@ function OptionCard({
             width: 150,
             height: 150,
             borderRadius: "50%",
-            background:
-              `radial-gradient(circle, ${accentSoft}, transparent 70%)`,
+            background: `radial-gradient(circle, ${accentSoft}, transparent 70%)`,
           }}
         />
-
 
         {/* TOP */}
 
@@ -802,7 +741,6 @@ function OptionCard({
             position: "relative",
           }}
         >
-
           <ReadinessRing
             icon={Icon}
             accent={accent}
@@ -825,9 +763,7 @@ function OptionCard({
           >
             {tag}
           </span>
-
         </div>
-
 
         {/* TITLE */}
 
@@ -836,7 +772,6 @@ function OptionCard({
             position: "relative",
           }}
         >
-
           <h3
             className="cp-display"
             style={{
@@ -859,9 +794,7 @@ function OptionCard({
           >
             {desc}
           </p>
-
         </div>
-
 
         {/* BULLETS */}
 
@@ -873,9 +806,7 @@ function OptionCard({
             position: "relative",
           }}
         >
-
           {bullets.map((b, i) => (
-
             <div
               key={i}
               style={{
@@ -884,7 +815,6 @@ function OptionCard({
                 gap: 9,
               }}
             >
-
               <div
                 style={{
                   width: 16,
@@ -897,7 +827,6 @@ function OptionCard({
                   flexShrink: 0,
                 }}
               >
-
                 <div
                   style={{
                     width: 5,
@@ -906,7 +835,6 @@ function OptionCard({
                     background: accent,
                   }}
                 />
-
               </div>
 
               <span
@@ -917,13 +845,9 @@ function OptionCard({
               >
                 {b}
               </span>
-
             </div>
-
           ))}
-
         </div>
-
 
         {/* CTA */}
 
@@ -940,36 +864,19 @@ function OptionCard({
             position: "relative",
           }}
         >
-
           Get started
-
-          <ArrowRight
-            size={16}
-            className="cp-arrow"
-          />
-
+          <ArrowRight size={16} className="cp-arrow" />
         </div>
-
       </button>
-
     </div>
   );
 }
-
 
 /* =========================================
    STEP CARD
 ========================================= */
 
-function StepCard({
-  icon: Icon,
-  step,
-  title,
-  desc,
-  accent,
-  accentSoft,
-}) {
-
+function StepCard({ icon: Icon, step, title, desc, accent, accentSoft }) {
   return (
     <div
       style={{
@@ -982,7 +889,6 @@ function StepCard({
         position: "relative",
       }}
     >
-
       <span
         className="cp-mono"
         style={{
@@ -1008,12 +914,7 @@ function StepCard({
           marginBottom: 16,
         }}
       >
-
-        <Icon
-          size={19}
-          color={accent}
-        />
-
+        <Icon size={19} color={accent} />
       </div>
 
       <h4
@@ -1038,46 +939,38 @@ function StepCard({
       >
         {desc}
       </p>
-
     </div>
   );
 }
-
 
 /* =========================================
    HOMEPAGE
 ========================================= */
 
 export default function HomePage() {
-
   const navigate = useNavigate();
 
   const [showOptions, setShowOptions] = useState(false);
   const [leaving, setLeaving] = useState(false);
-
 
   /* =========================================
      OPEN OPTIONS
   ========================================= */
 
   const handleCircleClick = () => {
-
     setLeaving(true);
 
     setTimeout(() => {
       setShowOptions(true);
       setLeaving(false);
     }, 320);
-
   };
-
 
   /* =========================================
      RENDER
 ========================================= */
 
   return (
-
     <div
       className="cp-root"
       style={{
@@ -1087,11 +980,9 @@ export default function HomePage() {
         color: tokens.text,
       }}
     >
-
       <GlobalStyle />
 
       <HomeBackground tokens={tokens} />
-
 
       <div
         style={{
@@ -1099,10 +990,6 @@ export default function HomePage() {
           zIndex: 1,
         }}
       >
-
-
-        
-
         {/* =====================================
             HERO
         ===================================== */}
@@ -1116,7 +1003,6 @@ export default function HomePage() {
             overflow: "hidden",
           }}
         >
-
           <Constellation />
 
           <div
@@ -1127,7 +1013,6 @@ export default function HomePage() {
               margin: "0 auto",
             }}
           >
-
             {/* BADGE */}
 
             <div
@@ -1143,11 +1028,7 @@ export default function HomePage() {
                 marginBottom: 22,
               }}
             >
-
-              <Zap
-                size={13}
-                color={tokens.gold}
-              />
+              <Zap size={13} color={tokens.gold} />
 
               <span
                 className="cp-mono"
@@ -1159,9 +1040,7 @@ export default function HomePage() {
               >
                 YOUR AI CAREER COACH
               </span>
-
             </div>
-
 
             {/* TITLE */}
 
@@ -1173,8 +1052,7 @@ export default function HomePage() {
                 lineHeight: 1.18,
                 margin: "0 0 14px",
                 letterSpacing: "-0.01em",
-                backgroundImage:
-                  `linear-gradient(100deg, ${tokens.text} 30%, ${tokens.teal} 65%, ${tokens.gold} 100%)`,
+                backgroundImage: `linear-gradient(100deg, ${tokens.text} 30%, ${tokens.teal} 65%, ${tokens.gold} 100%)`,
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
                 color: "transparent",
@@ -1182,7 +1060,6 @@ export default function HomePage() {
             >
               What are we working on today?
             </h1>
-
 
             {/* DESCRIPTION */}
 
@@ -1194,21 +1071,17 @@ export default function HomePage() {
                 margin: 0,
               }}
             >
-              Ask a career question or step into a realistic mock
-              interview — pick a path to begin.
+              Ask a career question or step into a realistic mock interview —
+              pick a path to begin.
             </p>
-
           </div>
-
         </div>
-
 
         {/* =====================================
             AI ORB / OPTIONS
         ===================================== */}
 
         {!showOptions ? (
-
           <div
             style={{
               display: "flex",
@@ -1218,11 +1091,7 @@ export default function HomePage() {
               position: "relative",
             }}
           >
-
-            <AiInterviewCircle
-              onClick={handleCircleClick}
-              leaving={leaving}
-            />
+            <AiInterviewCircle onClick={handleCircleClick} leaving={leaving} />
 
             <p
               style={{
@@ -1231,14 +1100,10 @@ export default function HomePage() {
                 margin: "4px 0 0",
               }}
             >
-              One tap away from your question — or your next mock
-              interview.
+              One tap away from your question — or your next mock interview.
             </p>
-
           </div>
-
         ) : (
-
           <div
             className="cp-content"
             style={{
@@ -1247,7 +1112,6 @@ export default function HomePage() {
               padding: "24px 48px 28px",
             }}
           >
-
             {/* START OVER */}
 
             <button
@@ -1257,7 +1121,6 @@ export default function HomePage() {
               <ArrowLeft size={14} />
               Start over
             </button>
-
 
             {/* OPTIONS */}
 
@@ -1271,7 +1134,6 @@ export default function HomePage() {
                 position: "relative",
               }}
             >
-
               {/* ASK A QUESTION */}
 
               <OptionCard
@@ -1293,7 +1155,6 @@ export default function HomePage() {
                 onClick={() => navigate("/ask-question")}
               />
 
-
               {/* DIVIDER */}
 
               <div
@@ -1307,7 +1168,6 @@ export default function HomePage() {
                   flexShrink: 0,
                 }}
               >
-
                 <div
                   style={{
                     width: 1,
@@ -1340,9 +1200,7 @@ export default function HomePage() {
                       ", transparent)",
                   }}
                 />
-
               </div>
-
 
               {/* MOCK INTERVIEW */}
 
@@ -1364,13 +1222,9 @@ export default function HomePage() {
                 ]}
                 onClick={() => navigate("/interview-setup")}
               />
-
             </div>
-
           </div>
-
         )}
-
 
         {/* =====================================
             STATS STRIP
@@ -1386,7 +1240,6 @@ export default function HomePage() {
             flexWrap: "wrap",
           }}
         >
-
           {[
             {
               icon: Target,
@@ -1412,7 +1265,6 @@ export default function HomePage() {
               soft: tokens.goldSoft,
             },
           ].map((s, i) => {
-
             const Icon = s.icon;
 
             return (
@@ -1429,7 +1281,6 @@ export default function HomePage() {
                   padding: "14px 20px",
                 }}
               >
-
                 <div
                   style={{
                     width: 36,
@@ -1441,16 +1292,10 @@ export default function HomePage() {
                     justifyContent: "center",
                   }}
                 >
-
-                  <Icon
-                    size={17}
-                    color={s.accent}
-                  />
-
+                  <Icon size={17} color={s.accent} />
                 </div>
 
                 <div>
-
                   <div
                     className="cp-display"
                     style={{
@@ -1470,15 +1315,11 @@ export default function HomePage() {
                   >
                     {s.label}
                   </div>
-
                 </div>
-
               </div>
             );
           })}
-
         </div>
-
 
         {/* =====================================
             HOW IT WORKS
@@ -1492,14 +1333,12 @@ export default function HomePage() {
             padding: "0 48px 72px",
           }}
         >
-
           <div
             style={{
               textAlign: "center",
               marginBottom: 30,
             }}
           >
-
             <span
               className="cp-mono"
               style={{
@@ -1523,9 +1362,7 @@ export default function HomePage() {
             >
               Two steps to walk in ready
             </h2>
-
           </div>
-
 
           <div
             className="cp-steps"
@@ -1534,7 +1371,6 @@ export default function HomePage() {
               gap: 18,
             }}
           >
-
             <StepCard
               icon={FileText}
               step="01"
@@ -1552,11 +1388,8 @@ export default function HomePage() {
               accentSoft={tokens.goldSoft}
               desc="Walk away with useful answers, interview feedback, and a readiness score."
             />
-
           </div>
-
         </div>
-
 
         {/* =====================================
             FOOTER
@@ -1574,7 +1407,6 @@ export default function HomePage() {
             gap: 12,
           }}
         >
-
           <Logo />
 
           <span
@@ -1585,11 +1417,8 @@ export default function HomePage() {
           >
             © 2026 AI HELPER — Career Intelligence
           </span>
-
         </div>
-
       </div>
-
     </div>
   );
 }
