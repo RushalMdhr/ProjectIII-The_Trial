@@ -29,6 +29,7 @@ class ChatSessionSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'title',
+            'use_case',
             'created_at',
             'updated_at',
             'archived',

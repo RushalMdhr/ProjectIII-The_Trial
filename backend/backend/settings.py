@@ -114,6 +114,7 @@ GOOGLE_REDIRECT_URI = 'http://localhost:8000/accounts/google/callback/'
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=50),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1000),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
