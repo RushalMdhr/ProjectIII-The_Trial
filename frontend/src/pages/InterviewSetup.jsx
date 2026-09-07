@@ -8,11 +8,17 @@ import {
 } from "lucide-react";
 import { createChatSession } from "../services/api";
 
+export const MAX_QUESTIONS_BY_DIFFICULTY = {
+  easy: 5,
+  medium: 8,
+  hard: 10,
+};
+
 const DIFFICULTIES = [
   {
     id: "easy",
     label: "Easy",
-    questions: 5,
+    questions: MAX_QUESTIONS_BY_DIFFICULTY.easy,
     icon: Wind,
     color: "#45E0D0",
     soft: "rgba(69,224,208,0.14)",
@@ -22,7 +28,7 @@ const DIFFICULTIES = [
   {
     id: "medium",
     label: "Medium",
-    questions: 8,
+    questions: MAX_QUESTIONS_BY_DIFFICULTY.medium,
     icon: Zap,
     color: "#FFB35B",
     soft: "rgba(255,179,91,0.14)",
@@ -32,7 +38,7 @@ const DIFFICULTIES = [
   {
     id: "hard",
     label: "Hard",
-    questions: 10,
+    questions: MAX_QUESTIONS_BY_DIFFICULTY.hard,
     icon: Flame,
     color: "#F4615B",
     soft: "rgba(244,97,91,0.14)",
