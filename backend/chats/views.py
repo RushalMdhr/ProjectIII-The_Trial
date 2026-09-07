@@ -16,6 +16,7 @@ def sessions(request):
 
     if request.method == 'GET':
         sessions = ChatSession.objects.filter(
+            use_case='general_chat',
             user=request.user,
             archived=False
         ).order_by('-updated_at')
