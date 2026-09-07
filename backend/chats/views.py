@@ -5,13 +5,39 @@ from rest_framework import status
 
 from ai.utils.embeddings import embed_text
 from ai.utils.message import assistant_talking, user_talking
-from ai.utils.chats_handler import chats_handler, generate_chat_title
+from ai.utils.chats_handler import (
+    chats_handler,
+    evaluate_interview_answer,
+    generate_chat_title,
+)
 
-from .models import ChatSession, ChatMessage
+from .models import ChatSession, ChatMessage, InterviewFeedback
 from accounts.models import UserProfile
 from .serializers import ChatSessionSerializer, ChatMessageSerializer
 
 from ai.documents.tools.context_handler import get_next_questions
+
+
+INTERVIEW_LIMITS = {
+    "easy": 5,
+    "medium": 8,
+    "hard": 10,
+}
+
+DIFFICULTY_LEVELS = {"easy": 0, "medium": 1, "hard": 2}
+
+
+def _update_interview_level(session, rating):
+    ceiling = DIFFICULTY_LEVELS[session.interview_difficulty]
+    current = DIFFICULTY_LEVELS[session.current_difficulty]
+    if rating >= 8:
+        current += 1
+    elif rating <= 4:
+        current -= 1
+    current = max(0, min(current, ceiling))
+    session.current_difficulty = next(
+        name for name, level in DIFFICULTY_LEVELS.items() if level == current
+    )
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -56,10 +82,29 @@ def sessions(request):
         title = request.data.get(
             'title',
             'New Chat Session')
+        interview_difficulty = request.data.get(
+            'interview_difficulty',
+            'medium',
+        )
+        if interview_difficulty not in INTERVIEW_LIMITS:
+            return Response(
+                {'error': 'Invalid interview difficulty.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         session = ChatSession.objects.create(
             user=request.user,
             use_case=use_case,
-            title=title
+            title=title,
+            interview_difficulty=interview_difficulty,
+            current_difficulty='easy',
+            max_questions=INTERVIEW_LIMITS[interview_difficulty],
+        )
+        print(
+            f"[INTERVIEW] CREATED session_id={session.id} "
+            f"selected_difficulty={session.interview_difficulty!r} "
+            f"current_difficulty={session.current_difficulty!r} "
+            f"max_questions={session.max_questions}",
+            flush=True,
         )
 
         serializer = ChatSessionSerializer(session)
@@ -119,7 +164,14 @@ def send_message(request):
             print("[send_message] Creating a new session", flush=True)
             session = ChatSession.objects.create(
                 user=request.user)
-        print(f"[send_message] Session ready: id={session.id}, use_case={session.use_case}", flush=True)
+        print(
+            f"[INTERVIEW] SESSION id={session.id} use_case={session.use_case!r} "
+            f"ceiling={session.interview_difficulty!r} "
+            f"current={session.current_difficulty!r} "
+            f"count={session.question_count}/{session.max_questions} "
+            f"archived={session.archived} halted={session.halted}",
+            flush=True,
+        )
         if session.title == 'New Chat Session':
 
             try:
@@ -141,9 +193,17 @@ def send_message(request):
         previous_messages = ChatMessage.objects.filter(
             session=session
         ).order_by('created_at')
+        previous_question = next(
+            (
+                message for message in reversed(previous_messages)
+                if message.question_text
+            ),
+            None,
+        )
         print(f"[send_message] Loading chat history for session {session.id}", flush=True)
 
         chat_history = []
+        halt_response = None
 
         for message in previous_messages:
 
@@ -153,6 +213,60 @@ def send_message(request):
             if message.assistant_content:
                 chat_history.append(assistant_talking(message.assistant_content))
         print(f"[send_message] Chat history prepared: {len(chat_history)} entries", flush=True)
+
+        evaluation_rating = None
+        evaluation_feedback = None
+        if session.use_case == "interview_assessment" and previous_question:
+            evaluation_rating, evaluation_feedback = evaluate_interview_answer(
+                previous_question.question_text,
+                previous_question.question_answer or "",
+                user_content,
+            )
+            previous_question.evaluation_rating = evaluation_rating
+            previous_question.evaluation_feedback = evaluation_feedback
+            previous_question.save(update_fields=[
+                "evaluation_rating",
+                "evaluation_feedback",
+            ])
+
+            InterviewFeedback.objects.update_or_create(
+                session=session,
+                message=previous_question,
+                defaults={
+                    "rating": evaluation_rating,
+                    "feedback": evaluation_feedback,
+                },
+            )
+
+            _update_interview_level(session, evaluation_rating)
+            print(
+                f"[INTERVIEW] EVALUATION question={previous_question.question_text!r} "
+                f"rating={evaluation_rating}/10 feedback={evaluation_feedback!r}",
+                flush=True,
+            )
+            session.save(update_fields=["current_difficulty", "updated_at"])
+            print(
+                f"[INTERVIEW] ADAPT next_difficulty={session.current_difficulty!r} "
+                f"ceiling={session.interview_difficulty!r}",
+                flush=True,
+            )
+            if evaluation_rating <= 1:
+                session.halted = True
+                session.archived = True
+                halt_response = (
+                    "Interview paused because the answer was not relevant. "
+                    "Please restart when you are ready to continue."
+                )
+                session.save(update_fields=[
+                    "current_difficulty",
+                    "halted",
+                    "archived",
+                    "updated_at",
+                ])
+            elif session.question_count >= session.max_questions:
+                session.archived = True
+                session.save(update_fields=["current_difficulty", "archived", "updated_at"])
+                halt_response = "Interview complete. Your selected question limit has been reached."
 
         # -------------------------
         # Generate embedding
@@ -187,9 +301,10 @@ def send_message(request):
         # Later this will come from your RAG pipeline.
 
         context = ""
+        context_list = None
         print(f"\n===============================================\nNope : {session.id, session.use_case}", flush=True)
         print(f"[send_message] Context retrieval started for use_case={session.use_case}", flush=True)
-        if session.use_case == "interview_assessment":
+        if session.use_case == "interview_assessment" and not session.halted and not halt_response:
             # For interview_assessment, we can fetch relevant context from the database
 
             # user_profile  = UserProfile.objects.get_or_create(
@@ -215,6 +330,23 @@ def send_message(request):
                     session_id = session.id,
                     top_k=1
                 )
+                print(
+                    f"[INTERVIEW] RAG RESULT status={context_list.get('status')!r} "
+                    f"generated={context_list.get('generated', False)}",
+                    flush=True,
+                )
+                if context_list.get('status') == 'missing_role':
+                    session.halted = True
+                    session.archived = True
+                    session.save(update_fields=['halted', 'archived', 'updated_at'])
+                    halt_response = (
+                        "Interview paused. Please add your target role to your profile "
+                        "before answering interview questions."
+                    )
+                elif context_list.get('status') == 'finished':
+                    session.archived = True
+                    session.save(update_fields=['archived', 'updated_at'])
+                    halt_response = "Interview complete. No more questions are available for this role."
                 context_parts = []
                 if isinstance(context_list, dict) and context_list.get('status') == 'success':
                     question_data = context_list.get('question', {})
@@ -222,6 +354,15 @@ def send_message(request):
                         q_text = question_data.get('question', '')
                         q_answer = question_data.get('answer', '')
                         context_parts.append(f"Question: {q_text}\nAnswer: {q_answer}")
+                        print(
+                            f"[INTERVIEW] QUESTION id={question_data.get('id')} "
+                            f"source_id={question_data.get('source_id')} "
+                            f"role={question_data.get('role')!r} "
+                            f"difficulty={question_data.get('difficulty')!r} "
+                            f"distance={question_data.get('distance')} "
+                            f"text={q_text!r}",
+                            flush=True,
+                        )
                 context = "\n\n".join(context_parts)
                 print(f"[send_message] Context retrieved: {len(context)} characters", flush=True)
 
@@ -247,12 +388,18 @@ def send_message(request):
 
             print("[send_message] Generating AI response", flush=True)
 
-            result = chats_handler(
-                user_content=user_content,
-                chat_history=chat_history,
-                context=context,
-                use_case=session.use_case,
-            )
+            if halt_response:
+                result = {
+                    "user_content": user_content,
+                    "assistant_content": halt_response,
+                }
+            else:
+                result = chats_handler(
+                    user_content=user_content,
+                    chat_history=chat_history,
+                    context=context,
+                    use_case=session.use_case,
+                )
 
             assistant_content = result["assistant_content"]
 
@@ -291,6 +438,21 @@ def send_message(request):
             user_content=result["user_content"],
             user_content_embedding=user_content_embedding,
             assistant_content=result["assistant_content"],
+            question_text=(
+                context_list.get('question', {}).get('question')
+                if context_list and context_list.get('status') == 'success'
+                else None
+            ),
+            question_answer=(
+                context_list.get('question', {}).get('answer')
+                if context_list and context_list.get('status') == 'success'
+                else None
+            ),
+            question_difficulty=(
+                context_list.get('question', {}).get('difficulty')
+                if context_list and context_list.get('status') == 'success'
+                else None
+            ),
         )
         print(f"[send_message] Message saved: id={message.id}, session_id={session.id}", flush=True)
 

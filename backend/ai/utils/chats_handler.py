@@ -1,3 +1,7 @@
+import json
+import re
+
+from ai.llm import ai
 from ai.utils.message import system_talking,user_talking,assistant_talking
 from ai.utils.chat_services import generate_response
 
@@ -204,8 +208,41 @@ Use clear, accessible language and avoid unnecessary jargon.
 The final recommendation should feel personalized to the individual rather than like a generic list of popular careers.
 answer user in 2 3 line
 """,
-    "interview_assessment": """please ask question directly to the user as provided in the context and do not provide any other information or explanation. Only ask one question at a time and wait for the user's response before asking the next question. Do not provide any answers or solutions to the questions asked. The goal is to assess the user's knowledge and skills through a series of questions. choose simple and straightforward questions that are relevant to the user's role and experience level. Avoid asking complex or multi-part questions. If the user provides an answer, acknowledge it and ask the next question. If the user does not provide an answer, politely remind them to answer before proceeding to the next question. The assessment should be conducted in a professional and respectful manner, maintaining a neutral tone throughout the conversation. The goal is to evaluate the user's knowledge and skills in a fair and unbiased manner.""",
+    "interview_assessment": """
+tell the word 'IDK' For every response no any word
+""",
 }
+
+
+def evaluate_interview_answer(question, expected_answer, candidate_answer):
+    """Return a bounded rating and concise feedback for one interview answer."""
+    prompt = f"""
+Evaluate this interview answer against the question and reference answer.
+Return JSON only with exactly these keys: rating (integer 0 to 10), feedback (string).
+Use rating 0 or 1 only when the answer is irrelevant, an explicit refusal, or nonsense.
+Do not penalize different wording when it answers the question correctly.
+
+Question: {question}
+Reference answer: {expected_answer}
+Candidate answer: {candidate_answer}
+"""
+    try:
+        raw = ai([system_talking(prompt)])
+        match = re.search(r"\{.*\}", str(raw), re.DOTALL)
+        result = json.loads(match.group(0) if match else str(raw))
+        rating = max(0, min(10, int(result.get("rating", 0))))
+        feedback = str(result.get("feedback", "")).strip()
+        if feedback:
+            return rating, feedback
+    except (ValueError, TypeError, json.JSONDecodeError, AttributeError):
+        pass
+
+    normalized = candidate_answer.strip().casefold()
+    if normalized in {"idk", "i don't know", "no idea", "irrelevant"}:
+        return 0, "The answer did not address the interview question."
+    if len(normalized.split()) < 5:
+        return 2, "The answer needs more relevant detail and evidence."
+    return 5, "The answer was recorded, but it needs more specific evidence and detail."
 
 
 def chats_handler(
@@ -237,6 +274,14 @@ def chats_handler(
 
     chat_history = chat_history or []
     context = context or ""
+
+    print(
+        f"[INTERVIEW-AI] use_case={use_case!r} context_chars={len(context)} "
+        f"history_messages={len(chat_history)}",
+        flush=True,
+    )
+    if context:
+        print(f"[INTERVIEW-AI] RAG context={context!r}", flush=True)
 
     messages = []
 
