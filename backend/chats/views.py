@@ -8,7 +8,10 @@ from ai.utils.message import assistant_talking, user_talking
 from ai.utils.chats_handler import chats_handler, generate_chat_title
 
 from .models import ChatSession, ChatMessage
+from accounts.models import UserProfile
 from .serializers import ChatSessionSerializer, ChatMessageSerializer
+
+from ai.documents.tools.context_handler import get_next_questions
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -70,15 +73,17 @@ def sessions(request):
 @permission_classes([IsAuthenticated])
 def send_message(request):
 
-    print("Request reached here", flush=True)
+    print("[send_message] Request received", flush=True)
 
     user_content = request.data.get('user_content')
     session_id = request.data.get('session')
+    print(f"[send_message] Input received: session_id={session_id}, has_user_content={bool(user_content)}", flush=True)
 
     # -------------------------
     # Validate input
     # -------------------------
     if not user_content or not user_content.strip():
+        print("[send_message] Validation failed: user_content is missing or empty", flush=True)
         return Response(
             {
                 'error': 'user_content is required.'
@@ -92,6 +97,7 @@ def send_message(request):
         # Get existing session OR create new session
         # -------------------------
         if session_id:
+            print(f"[send_message] Looking up session: {session_id}", flush=True)
 
             try:
                 session = ChatSession.objects.get(
@@ -101,6 +107,7 @@ def send_message(request):
                 )
 
             except ChatSession.DoesNotExist:
+                print(f"[send_message] Session not found: {session_id}", flush=True)
                 return Response(
                     {
                         'error': 'Chat session not found.'
@@ -109,21 +116,24 @@ def send_message(request):
                 )
 
         else:
+            print("[send_message] Creating a new session", flush=True)
             session = ChatSession.objects.create(
                 user=request.user)
-
-        # Update chat title
+        print(f"[send_message] Session ready: id={session.id}, use_case={session.use_case}", flush=True)
         if session.title == 'New Chat Session':
 
             try:
+                print(f"[send_message] Generating title for session {session.id}", flush=True)
                 session.title = generate_chat_title(user_content)
                 session.save(update_fields=['title', 'updated_at'])
+                print(f"[send_message] Title generated: {session.title}", flush=True)
             except Exception as e:
                 print(f"Title generation error: {str(e)}", flush=True)
 
                 # Fallback if LLM title generation fails
                 session.title = "New Chat Session"
                 session.save(update_fields=['title', 'updated_at'])
+                print("[send_message] Using fallback title", flush=True)
 
 
         # Get chat history
@@ -131,6 +141,7 @@ def send_message(request):
         previous_messages = ChatMessage.objects.filter(
             session=session
         ).order_by('created_at')
+        print(f"[send_message] Loading chat history for session {session.id}", flush=True)
 
         chat_history = []
 
@@ -141,15 +152,19 @@ def send_message(request):
 
             if message.assistant_content:
                 chat_history.append(assistant_talking(message.assistant_content))
+        print(f"[send_message] Chat history prepared: {len(chat_history)} entries", flush=True)
 
         # -------------------------
         # Generate embedding
         # -------------------------
         try:
 
+            print("[send_message] Generating message embedding", flush=True)
+
             user_content_embedding = embed_text(
                 user_content
             )
+            print("[send_message] Message embedding generated", flush=True)
 
         except Exception as e:
 
@@ -172,11 +187,65 @@ def send_message(request):
         # Later this will come from your RAG pipeline.
 
         context = ""
+        print(f"\n===============================================\nNope : {session.id, session.use_case}", flush=True)
+        print(f"[send_message] Context retrieval started for use_case={session.use_case}", flush=True)
+        if session.use_case == "interview_assessment":
+            # For interview_assessment, we can fetch relevant context from the database
+
+            # user_profile  = UserProfile.objects.get_or_create(
+            #         user=request.user
+            #     )
+            # In your view
+            # user_profile = UserProfile.objects.get(user=request.user)
+            # print(f"\n===============================================\nUser profile: {user_profile}", flush=True)
+
+            # # Convert to dict
+            # profile_data = {
+            #     'primary_role': user_profile.primary_role,
+            #     'target_role': user_profile.target_role,
+            #     'experience_level': user_profile.experience_level,
+            #     'skills': user_profile.skills,
+            #     'education': user_profile.education,
+            # }
+
+            try:
+                context_list = get_next_questions(
+                    user = request.user,
+                    user_content = user_content,
+                    session_id = session.id,
+                    top_k=1
+                )
+                context_parts = []
+                if isinstance(context_list, dict) and context_list.get('status') == 'success':
+                    question_data = context_list.get('question', {})
+                    if question_data:
+                        q_text = question_data.get('question', '')
+                        q_answer = question_data.get('answer', '')
+                        context_parts.append(f"Question: {q_text}\nAnswer: {q_answer}")
+                context = "\n\n".join(context_parts)
+                print(f"[send_message] Context retrieved: {len(context)} characters", flush=True)
+
+
+            except Exception as e:
+
+                print(
+                    f"Context retrieval error: {str(e)}",
+                    flush=True
+                )
+
+                return Response(
+                    {
+                        'error': 'Failed to retrieve relevant context.'
+                    },
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
 
         # -------------------------
         # Generate AI response
         # -------------------------
         try:
+
+            print("[send_message] Generating AI response", flush=True)
 
             result = chats_handler(
                 user_content=user_content,
@@ -223,6 +292,7 @@ def send_message(request):
             user_content_embedding=user_content_embedding,
             assistant_content=result["assistant_content"],
         )
+        print(f"[send_message] Message saved: id={message.id}, session_id={session.id}", flush=True)
 
         # -------------------------
         # Serialize response
@@ -234,6 +304,7 @@ def send_message(request):
         session_serializer = ChatSessionSerializer(
             session
         )
+        print("[send_message] Response serialized successfully", flush=True)
 
         return Response(
             {
@@ -246,7 +317,7 @@ def send_message(request):
     except Exception as e:
 
         print(
-            f"send_message error: {str(e)}",
+            f"[send_message] Unexpected error: {str(e)}",
             flush=True
         )
 

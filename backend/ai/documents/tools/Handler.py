@@ -108,7 +108,7 @@ def batch_insert_questions(df,source_name,source_description, batch_size=500):
                     row["answer"],
                     row["role"],
                     row["assigned_experience"],
-                    "hard",
+                    "easy",
                     json.dumps(row.get("keywords", "")),
                     source_id,  # ← Use the source_id here
                     q_emb,      # question_embedding

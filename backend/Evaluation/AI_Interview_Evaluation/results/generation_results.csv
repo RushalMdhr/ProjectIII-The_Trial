@@ -1,0 +1,284 @@
+query,reference_answer,generated_answer,exact_match,bleu,rouge1,rouge2,rougeL,token_f1
+Tell me about a time you had to learn something completely new quickly.,"I'm always eager to learn and embrace change as a way to improve. For example, I once had to switch to a new tech stack and picked it up quickly.","I recall a situation where I was tasked with implementing a new feature that required knowledge of a specific programming language and technology stack. The catch was that the documentation for this technology was limited, and I had to learn it from scratch within a tight deadline.
+
+To get up to speed quickly, I focused on understanding the core concepts and principles of the technology, rather than trying to memorize every detail. I also broke down the learning process into smaller, manageable chunks, creating a step-by-step guide to help me stay organized.
+
+Additionally, I made sure to communicate regularly with my team and stakeholders to ensure that I was on the right track and to get feedback on my progress. This helped me identify areas where I needed more clarification or practice, allowing me to adjust my learning plan accordingly.
+
+Through this experience, I learned the importance of being adaptable, asking questions, and seeking help when needed. By prioritizing understanding over speed, I was able to deliver a high-quality solution that met the project's requirements, even with limited prior knowledge of the technology.",0,0.004621281399391763,0.16513761467889906,0.027777777777777776,0.09174311926605505,0.16513761467889906
+Describe a time you handled a difficult situation professionally.,"When faced with conflict, I approach it calmly and try to understand all perspectives before finding a solution together.","I recall a challenging incident where I had to respond to a critical vulnerability in our production environment, which was affecting multiple users simultaneously. The situation required swift action to minimize disruption while ensuring compliance with regulatory requirements.
+
+To manage the situation effectively, I prioritized stabilization of the immediate impact, communicated clearly and transparently with stakeholders, including both technical teams and management. This involved providing regular updates on the status of the vulnerability and our remediation efforts.
+
+I also conducted a blameless root-cause review to identify the underlying causes of the issue, which helped me to refine my approach for future incidents. Throughout the process, I maintained open communication with both the Application Security team and Product Engineering, ensuring that everyone was aligned on the plan and any changes.
+
+By taking a methodical and structured approach, I was able to resolve the vulnerability while minimizing disruption to our users. The outcome met the original goal, and I captured valuable lessons for future incident response efforts.",0,0.0016919282482641706,0.06486486486486485,0.0,0.05405405405405406,0.06486486486486485
+Where do you see yourself in 5 years?,My long-term goal is to grow into a senior role where I can contribute more strategically and mentor others. This role brings me closer to that.,"In five years, I envision myself as a leading expert in my field, having made significant contributions to the development of AI/ML models that drive business value for organizations. I'd like to be in a senior leadership role, where I can leverage my expertise to shape the direction of data science initiatives and drive innovation across multiple teams.
+
+I see myself continuing to work on complex problems, collaborating with cross-functional teams, and mentoring junior engineers to help them grow professionally. I'm also excited about the prospect of taking on new challenges, such as leading large-scale projects or spearheading research initiatives that push the boundaries of what's possible in AI/ML.
+
+Ultimately, my goal is to be recognized as a trusted advisor and thought leader in the industry, known for my ability to drive business outcomes through data-driven insights. I'm committed to staying up-to-date with the latest advancements in AI/ML and continuing to develop my skills to stay ahead of the curve.",0,0.023368728846484898,0.16080402010050251,0.07106598984771573,0.12060301507537688,0.1407035175879397
+Tell me about a conflict you had with a coworker and how you resolved it.,"When faced with conflict, I approach it calmly and try to understand all perspectives before finding a solution together.","I recall a situation where I was working on a project with a tight deadline, and my colleague and I were tasked with implementing a new feature together. However, we had different opinions on the approach to take, which led to a disagreement.
+
+The issue arose when one of us suggested using an alternative method that would have increased development time, while the other person preferred our original plan. We both felt strongly about our perspectives, and the conversation became heated.
+
+To resolve the conflict, I decided to address it directly with my colleague in a private setting. I listened to their concerns and explained why I thought our original approach was better suited for the project's timeline. I also shared some data and insights that supported our decision.
+
+We then took a step back and re-evaluated the situation together, considering both options and their potential impact on the project. We found common ground by identifying areas where we could compromise and still meet our goals.
+
+Ultimately, we decided to implement a hybrid approach that combined elements of both our original plans. This solution allowed us to achieve our objectives while minimizing development time.
+
+Throughout the process, I made sure to maintain open communication with my colleague, actively listening to their concerns and being transparent about my own thoughts and feelings. By doing so, we were able to find a mutually beneficial solution that satisfied both of our needs.
+
+In the end, our collaboration resulted in a successful project delivery, and we learned valuable lessons from the experience about effective conflict resolution and teamwork.",0,0.0022252228711461767,0.09122807017543857,0.014134275618374558,0.06315789473684211,0.08421052631578947
+What skills do you hope to develop in your next role?,My long-term goal is to grow into a senior role where I can contribute more strategically and mentor others. This role brings me closer to that.,"I'm eager to develop a range of skills that will enable me to make a meaningful impact in my next role. Specifically, I'd like to improve my ability to analyze complex problems, identify key trade-offs, and communicate effectively with stakeholders. I also aim to refine my project management skills, including prioritization, collaboration, and risk mitigation.
+
+Additionally, I'm interested in developing expertise in areas such as Agile methodologies, DevOps practices, and technical leadership. I believe that these skills will enable me to drive innovation, improve efficiency, and deliver high-quality results in a rapidly changing environment.
+
+Ultimately, my goal is to become a versatile and adaptable professional who can thrive in a variety of contexts and make a lasting impact on the teams I work with.",0,0.009762461269622661,0.15384615384615385,0.025974025974025976,0.08974358974358974,0.15384615384615385
+What's the most significant change you've had to adapt to at work?,"I'm always eager to learn and embrace change as a way to improve. For example, I once had to switch to a new tech stack and picked it up quickly.","I'd treat this as a case of balancing competing constraints rather than picking one side outright. I'd be honest about how I work and ask questions to see if that matches how the team actually operates, paying close attention to Agile methodology, PCI DSS compliance, Jira, geographically dispersed teams since those are the constraints that actually drive the right answer here. Concretely, I'd lay out the options, flag the risks tied to Agile methodology, and agree with stakeholders on which trade-off we're willing to accept before committing to a plan. In practice, the details matter here, so I'd validate each assumption against real data before moving forward. I'd also make sure to keep my manager and the affected teams in the loop throughout, since clear communication is what keeps trust intact even when timelines are tight.",0,0.004840194208334791,0.13793103448275862,0.023255813953488372,0.10344827586206898,0.12643678160919541
+How does this role fit into your career path?,My long-term goal is to grow into a senior role where I can contribute more strategically and mentor others. This role brings me closer to that.,"This role aligns with my long-term career goals by providing a unique opportunity to apply technical expertise to drive business outcomes and lead cross-functional teams. As a Sales / Solutions Engineer, I'll be responsible for integrating new technologies into our platform, ensuring HIPAA compliance, and collaborating with stakeholders to deliver successful solutions.
+
+In the short term, this role will help me develop my leadership skills, expand my knowledge of FinTech and payment gateways, and enhance my ability to communicate technical concepts to non-technical audiences. I'm excited about the prospect of working on a tight deadline, managing a team of developers with varying levels of experience, and navigating complex technical challenges.
+
+In the long term, this role will provide a solid foundation for further growth and advancement within the company. I'm eager to take on new challenges, continue learning and developing my skills, and contributing to the success of our FinTech platform.",0,0.009095970427351998,0.1639344262295082,0.03314917127071824,0.1311475409836066,0.14207650273224043
+Tell me about a time you worked well within a team.,"I believe communication and mutual respect are key to successful collaboration. In one project, we achieved X because of great teamwork.","I've had experience working collaboratively with cross-functional teams, prioritizing clear communication and mutual understanding to drive successful outcomes.
+
+In my previous role, I was part of a team that aimed to improve the overall user experience for our game's e-commerce platform. We utilized tools like Confluence and Jira to track progress, feature development, and bug fixes.
+
+To ensure effective collaboration, we established regular check-ins with Product Management, QA, and DevOps teams to discuss priorities, trade-offs, and potential roadblocks. This helped us stay aligned on our goals and make informed decisions about resource allocation.
+
+By fostering open communication and actively listening to each other's perspectives, we were able to navigate complex technical issues and identify creative solutions that met both the team's and stakeholders' expectations.
+
+Through this experience, I learned the importance of adaptability, empathy, and clear decision-making in a collaborative environment. By prioritizing these values, we were able to deliver a high-quality product that exceeded our users' expectations.",0,0.007142546108415067,0.10582010582010581,0.021390374331550804,0.09523809523809523,0.10582010582010581
+What are your expectations from leadership in a company?,"I thrive in collaborative, transparent environments where innovation and respect are valued.","I expect leadership in a company to be transparent, communicative, and data-driven. Here are some specific expectations:
+
+1. Clear vision and goals: I expect leaders to have a clear understanding of the company's mission, values, and long-term goals.
+2. Open communication: Leaders should maintain open lines of communication with employees at all levels, actively listening to concerns and ideas.
+3. Data-informed decision-making: Leaders should be willing to make data-driven decisions, using metrics and analytics to inform their choices.
+4. Empowerment and autonomy: I expect leaders to empower teams to take ownership of their work, providing the necessary resources and support to succeed.
+5. Accountability: Leaders should be accountable for their actions and decisions, taking responsibility when things go wrong and learning from mistakes.
+6. Emotional intelligence: Effective leaders possess emotional intelligence, which enables them to understand and manage their own emotions, as well as those of their team members.
+7. Adaptability: Leadership should be adaptable, willing to pivot when circumstances change or new information becomes available.
+8. Recognition and feedback: Leaders should recognize and reward outstanding performance, providing constructive feedback to help employees grow and improve.
+9. Prioritization: Leaders should prioritize tasks and projects effectively, focusing on the most critical objectives that drive business success.
+10. Integrity and ethics: Leadership should be guided by a strong sense of integrity and ethics, ensuring that decisions align with the company's values and principles.
+
+By expecting these qualities from leadership, I believe teams are more likely to thrive, innovate, and achieve their full potential.",0,0.0010850620363093604,0.05925925925925926,0.007462686567164179,0.04444444444444444,0.04444444444444444
+What motivates you to come to work every day?,I'm motivated by challenges and the opportunity to grow both personally and professionally.,"I'm motivated by a desire to deliver high-quality solutions that meet the needs of our stakeholders while ensuring a positive work environment. I believe in treating challenges as opportunities for growth and learning, rather than obstacles to be overcome. By approaching problems methodically and staying focused on the fundamentals, I'm able to find creative solutions and make a meaningful impact.",0,0.0440854328121759,0.2597402597402597,0.07999999999999999,0.23376623376623376,0.23376623376623376
+How do you motivate others in a leadership role?,"I lead by example and encourage open communication and accountability. One time, I led a team through X and we achieved Y.","I motivate others by setting clear expectations, being transparent about goals and challenges, and empowering team members to take ownership of their work. I also prioritize open communication, active listening, and constructive feedback to ensure everyone is aligned and working towards the same objectives.
+
+By doing so, I create an environment where individuals feel valued, supported, and encouraged to grow and develop within their roles. This approach helps build trust, fosters a positive team culture, and drives collective success.",0,0.007256772316020241,0.21782178217821782,0.0404040404040404,0.198019801980198,0.198019801980198
+What tools or methods help you stay organized?,I follow a structured workflow and use tools like Jira/Trello/Notion to manage my tasks efficiently.,"I use various tools and methods to stay organized, including task management systems like Trello or Asana, project planning software such as Jira, and collaboration platforms like Slack or Microsoft Teams. I also prioritize my tasks using the Eisenhower Matrix, which helps me focus on the most critical tasks first.
+
+Additionally, I utilize browser extensions like Todoist or RescueTime to track my time spent on tasks and stay focused. I also make sure to set clear deadlines and communicate regularly with team members to ensure everyone is on the same page.
+
+Furthermore, I use a task list to break down large projects into smaller, manageable tasks, and I prioritize them based on their importance and urgency. This helps me stay organized and ensure that I'm making progress on my goals.
+
+Overall, staying organized is essential for achieving success in any project or endeavor, and I've found that using the right tools and methods can make a significant difference.",0,0.00363353802714851,0.13559322033898305,0.011428571428571429,0.09039548022598869,0.12429378531073448
+How do you build trust with new teammates?,"I believe communication and mutual respect are key to successful collaboration. In one project, we achieved X because of great teamwork.","I believe building trust with new teammates starts with being transparent, approachable, and communicative. Here's how I'd approach it:
+
+Firstly, I'd make an effort to get to know them individually, understand their strengths, weaknesses, and interests. This helps me build a personal connection and establish a rapport.
+
+Secondly, I'd be open and honest about my own goals, expectations, and limitations. This sets the tone for mutual understanding and encourages them to do the same.
+
+Thirdly, I'd prioritize clear and timely communication, ensuring that everyone is on the same page. Regular check-ins, updates, and feedback loops help prevent misunderstandings and foster a sense of collaboration.
+
+Fourthly, I'd demonstrate my commitment to the team's success by being proactive, reliable, and accountable. This shows that I'm invested in our shared goals and willing to put in the effort required to achieve them.
+
+Lastly, I'd be willing to listen actively, ask questions, and learn from their perspectives. This helps me gain a deeper understanding of their needs, concerns, and ideas, which can lead to more effective collaboration and trust-building.
+
+By following these steps, I believe it's possible to establish a strong foundation for trust with new teammates, setting us up for success in our shared endeavors.",0,0.0025775535937165605,0.09361702127659574,0.008583690987124463,0.0851063829787234,0.07659574468085106
+Describe a time you felt out of place in a workplace culture.,"I thrive in collaborative, transparent environments where innovation and respect are valued.","I recall a situation where I joined a new team with a distinct company culture that was quite different from my own background and work style. Initially, I struggled to adapt to the fast-paced and informal environment, which sometimes made it challenging for me to communicate effectively or fit in with the team's dynamic.
+
+However, I recognized that being an outsider presented an opportunity to learn and grow. I took the initiative to observe and listen more, asking questions and seeking feedback from my colleagues to better understand their perspectives and work habits. By doing so, I was able to find common ground and establish a connection with the team, which ultimately helped me feel more comfortable and valued.
+
+Through this experience, I learned that being open-minded, adaptable, and willing to learn is essential for success in any workplace culture. By embracing my differences and finding ways to contribute to the team's efforts, I was able to build strong relationships and become a more effective member of the organization.",0,0.001550556534696072,0.06486486486486485,0.0,0.04324324324324324,0.05405405405405406
+Do you prefer working independently or in teams? Why?,I follow a structured workflow and use tools like Jira/Trello/Notion to manage my tasks efficiently.,"I believe that both independent work and team collaboration have their own strengths and weaknesses, and it ultimately depends on the specific situation and task at hand.
+
+When working independently, I can focus intensely on a particular problem or project, allowing me to make rapid progress and deliver high-quality results. This approach is ideal for tasks that require a lot of concentration, creativity, or innovation.
+
+On the other hand, team collaboration offers numerous benefits, including diverse perspectives, shared knowledge, and collective expertise. Working with others can help me stay motivated, learn from others' experiences, and gain new insights that I may not have considered on my own.
+
+In general, I prefer to work in teams when the task requires a high degree of coordination, communication, or problem-solving that involves multiple stakeholders. However, for tasks that require intense focus, creativity, or innovation, I believe that working independently can be more effective.
+
+Ultimately, as a professional, I recognize that both independent work and team collaboration are essential skills to develop, and I strive to adapt my approach to suit the specific needs of each project or task.",0,0.001500381798764372,0.05882352941176471,0.0,0.05882352941176471,0.05882352941176471
+Describe a time you led a project or team.,"I lead by example and encourage open communication and accountability. One time, I led a team through X and we achieved Y.","I recall leading a project that involved developing a new feature for an online platform. The goal was to launch the feature within a tight deadline, while ensuring high-quality work and meeting stakeholder expectations.
+
+To manage the project effectively, I prioritized clear communication with all stakeholders, including team members, product management, and external partners. I utilized collaboration tools like Confluence and Jira to track progress, identify potential roadblocks, and make data-driven decisions.
+
+Throughout the project, I actively managed conflicts and trade-offs by engaging in open discussions with team members and stakeholders. I ensured that everyone was aligned on goals, timelines, and expectations, and made adjustments as needed to mitigate risks and optimize outcomes.
+
+Ultimately, we successfully launched the feature within the deadline, meeting both our internal and external stakeholder expectations. The project's success was a testament to the effective collaboration, communication, and problem-solving that I facilitated throughout the process.",0,0.0037765044394540595,0.13636363636363635,0.01149425287356322,0.10227272727272727,0.125
+How do you delegate tasks effectively?,"I lead by example and encourage open communication and accountability. One time, I led a team through X and we achieved Y.","To delegate tasks effectively, I would follow these steps:
+
+1. Clearly define the task: Ensure that the task is well-defined and specific, with a clear understanding of what needs to be accomplished.
+2. Identify the right person: Determine which team member or resource has the necessary skills, expertise, and availability to complete the task.
+3. Communicate expectations: Clearly communicate the task requirements, deadlines, and any dependencies or constraints to the delegatee.
+4. Provide necessary resources: Ensure that the delegatee has access to the necessary tools, information, and support to complete the task successfully.
+5. Set clear goals and metrics: Establish specific goals and metrics for the task, such as quality standards or delivery timelines.
+6. Monitor progress: Regularly check-in with the delegatee to monitor their progress, provide feedback, and address any issues that arise.
+7. Empower autonomy: Give the delegatee the freedom to make decisions and take ownership of the task, while still providing guidance and support when needed.
+
+By following these steps, I believe it is possible to effectively delegate tasks that align with the team's goals and objectives, while also ensuring that the work is completed efficiently and effectively.",0,0.0015536353278534094,0.08333333333333334,0.0,0.06481481481481481,0.07407407407407407
+How do you align with our company values?,"I thrive in collaborative, transparent environments where innovation and respect are valued.","I strive to embody the core principles of DefenseTech's values, particularly innovation, integrity, and collaboration. As a Scrum Master, I prioritize transparency, open communication, and empathy in my interactions with team members, stakeholders, and customers.
+
+In high-pressure situations like the ones described, I focus on making informed decisions that balance competing constraints while upholding our company's commitment to customer satisfaction and sustainable growth. By doing so, I aim to ensure that our solutions are not only technically sound but also aligned with our values.
+
+Ultimately, my goal is to foster a culture of trust, respect, and continuous learning within the team, where everyone feels empowered to contribute their expertise and insights. By aligning with our company values, I believe we can deliver exceptional results while maintaining a strong sense of purpose and integrity.",0,0.0021506375830082675,0.13513513513513514,0.0,0.0810810810810811,0.09459459459459459
+Why do you want to work at our company?,I'm motivated by challenges and the opportunity to grow both personally and professionally.,"I'm excited about the opportunity to join your team because of the company's mission and values, as well as the specific project I'll be working on. I'm drawn to the company's commitment to [briefly mention a relevant aspect of the company's mission or values that resonates with you]. Additionally, I'm impressed by the company's approach to [specific area of interest, e.g., innovation, customer satisfaction, etc.].
+
+I'm also excited about the opportunity to work on the project, which aligns with my skills and interests. I believe my experience in [relevant skill or area of expertise] would be a great fit for this role, and I'm looking forward to contributing to the team's success.
+
+What I've learned about the company culture and values so far has given me confidence that I would thrive in this environment and make meaningful contributions to the team.",0,0.008161963319811047,0.09523809523809525,0.03614457831325302,0.08333333333333334,0.09523809523809525
+What makes a good leader in your opinion?,"I lead by example and encourage open communication and accountability. One time, I led a team through X and we achieved Y.","A good leader prioritizes making informed decisions, communicating effectively, and balancing competing constraints to achieve shared goals. They are methodical, transparent, and adaptable, with a focus on maintaining trust and morale within the team. By weighing options, flagging risks, and agreeing with stakeholders on trade-offs, they ensure that their approach aligns with the organization's values and objectives. Ultimately, a good leader seeks to find resolutions that prioritize both productivity and team well-being.",0,0.003787047284389884,0.16494845360824745,0.0,0.10309278350515463,0.12371134020618556
+What are your long-term career aspirations?,My long-term goal is to grow into a senior role where I can contribute more strategically and mentor others. This role brings me closer to that.,"I'm excited about the opportunity to continue growing and learning as a professional. In the next 5-10 years, I aim to take on increasingly complex and strategic roles that leverage my technical expertise and business acumen.
+
+Specifically, I'd like to explore opportunities in leadership positions, such as Director or VP of Engineering, where I can drive technical strategy, build high-performing teams, and contribute to the growth and success of a company.
+
+I'm also interested in exploring emerging technologies and trends that are shaping the industry, such as cloud computing, artificial intelligence, and cybersecurity. I believe that staying ahead of the curve and continuously learning new skills is essential for long-term career success.
+
+Ultimately, my goal is to become a trusted advisor and leader who can make a meaningful impact on the companies I work with and contribute to the development of innovative solutions that drive business value and improve people's lives.",0,0.01236029254884616,0.1837837837837838,0.0546448087431694,0.11891891891891893,0.15135135135135133
+Describe your ideal workday.,I follow a structured workflow and use tools like Jira/Trello/Notion to manage my tasks efficiently.,"My ideal workday would be one that balances productivity, collaboration, and personal growth. Here's how it would play out:
+
+I wake up early, feeling refreshed and energized after a good night's sleep. I start my day by reviewing my schedule and prioritizing my tasks for the day. I make sure to allocate time for focused work, as well as breaks to recharge and refocus.
+
+First thing in the morning, I meet with my team to discuss ongoing projects and share updates on our progress. We use this time to align on goals, address any challenges or concerns, and set clear expectations for the day ahead.
+
+After the team meeting, I dedicate a few hours to focused work on a critical task that requires my attention. I minimize distractions, take regular breaks, and make sure to stay hydrated and energized throughout the process.
+
+As I work, I also make time to learn something new. Whether it's reading industry blogs, watching tutorials, or attending webinars, I believe in continuous learning and professional development. This helps me stay up-to-date with the latest trends and technologies, and ensures that my skills remain relevant in a rapidly changing landscape.
+
+Throughout the day, I take breaks to connect with colleagues and friends outside of work. Whether it's grabbing lunch together, taking a walk during our break time, or simply chatting about life outside of the office, these interactions help me stay grounded and connected to the people around me.
+
+As the day winds down, I reflect on my accomplishments and identify areas for improvement. I also take time to plan and prepare for the next day, making sure that I'm set up for success before bed.
+
+Finally, I end my workday with a sense of satisfaction and fulfillment. I know that I've made progress on my goals, and that I've contributed to something meaningful and impactful.
+
+Overall, my ideal workday is one that balances productivity, collaboration, and personal growth. It's a day that allows me to be focused, engaged, and fulfilled – both in my work and in my personal life.",0,0.001459209247166849,0.03773584905660377,0.005420054200542006,0.03234501347708895,0.03773584905660377
+How do you deal with feedback that you disagree with?,"When faced with conflict, I approach it calmly and try to understand all perspectives before finding a solution together.","I approach feedback that I disagree with in a constructive manner, focusing on understanding the other person's perspective rather than becoming defensive. Here are some steps I take:
+
+1. Listen actively: I make sure to fully understand the feedback and ask clarifying questions to ensure I comprehend the issue.
+2. Acknowledge the feedback: I acknowledge the feedback and show that I'm taking it seriously, even if I don't agree with it.
+3. Focus on the issue, not the person: I separate the problem from the person providing the feedback, avoiding personal attacks or criticisms.
+4. Seek common ground: I look for areas of agreement and try to find a mutually beneficial solution.
+5. Provide evidence or alternatives: If I disagree with the feedback, I provide evidence or alternative solutions that support my perspective.
+6. Be open to compromise: I'm willing to consider alternative perspectives and find a middle ground that works for everyone.
+
+Ultimately, my goal is to resolve the issue and move forward in a positive direction, even if we don't see eye-to-eye on everything.",0,0.007426088071596028,0.11881188118811882,0.04,0.0891089108910891,0.10891089108910892
+What role do you usually play in group settings?,"I believe communication and mutual respect are key to successful collaboration. In one project, we achieved X because of great teamwork.","I'm an active listener, often taking on a facilitator or mediator role to ensure that all perspectives are heard and considered. I strive to remain neutral and impartial, focusing on finding mutually beneficial solutions that meet the needs of everyone involved. By doing so, I aim to create a collaborative environment where individuals feel valued and empowered to contribute their ideas and expertise.",0,0.004255317692616196,0.16470588235294117,0.0,0.11764705882352941,0.11764705882352941
+What would you do if you disagreed with your manager?,"When faced with conflict, I approach it calmly and try to understand all perspectives before finding a solution together.","I'd address the disagreement directly and privately first, focusing on finding a shared understanding of the issue rather than who is right. I'd lay out my concerns, listen to their perspective, and work together to identify common goals and potential solutions. If necessary, I'd escalate the discussion to ensure we're considering all relevant factors and aligning with our organization's objectives. Ultimately, I'd commit to finding a mutually beneficial solution that meets both our needs.",0,0.006978065245536884,0.22222222222222227,0.020618556701030927,0.1414141414141414,0.18181818181818182
+Tell me about a time you were highly motivated to achieve a goal.,I'm motivated by challenges and the opportunity to grow both personally and professionally.,"I recall a situation where I was tasked with optimizing the performance of a complex algorithm used in a critical application. The team's deadline was tight, and the stakes were high if we didn't meet it.
+
+To get started, I broke down the problem into smaller, manageable tasks and created a clear plan of action. I prioritized the most critical components of the algorithm and focused on those first. As I worked through each task, I made sure to validate my assumptions against real data and adjust my approach accordingly.
+
+Throughout the process, I maintained open communication with the team and stakeholders, ensuring that everyone was aligned on our goals and progress. This helped us navigate any unexpected challenges that arose and make informed decisions about how to proceed.
+
+As I worked towards the deadline, I drew on my problem-solving skills and experience to overcome obstacles and find creative solutions. When we finally met the deadline, it was a huge accomplishment for the team, and I felt a strong sense of pride and satisfaction knowing that our hard work had paid off.
+
+Looking back, I realize that what motivated me most was the opportunity to make a tangible impact on the project's success. By staying focused, working collaboratively with my team, and being adaptable in the face of challenges, we were able to achieve our goal and deliver high-quality results.",0,0.005489831750711784,0.07228915662650602,0.0242914979757085,0.05622489959839357,0.07228915662650602
+How do you contribute to a positive team environment?,"I thrive in collaborative, transparent environments where innovation and respect are valued.","I believe that contributing to a positive team environment is crucial for achieving success and maintaining productivity. Here's how I approach it:
+
+Firstly, I prioritize open and transparent communication within the team. This involves actively listening to others' perspectives, sharing my own thoughts and ideas, and ensuring that everyone feels heard and valued.
+
+Secondly, I foster a culture of empathy and understanding. I make an effort to understand each team member's strengths, weaknesses, and challenges, and I'm willing to lend a helping hand when needed.
+
+Thirdly, I promote a growth mindset within the team. I encourage my colleagues to take ownership of their work, learn from their mistakes, and continuously improve their skills.
+
+Fourthly, I celebrate successes and recognize individual contributions. This helps to boost morale, motivation, and job satisfaction.
+
+Lastly, I lead by example. I strive to be a positive role model, demonstrating the behaviors and values that I expect from my team members.
+
+By following these principles, I believe that I can contribute to a positive team environment that is collaborative, supportive, and productive.",0,0.0014981412400662595,0.06282722513089005,0.0,0.041884816753926704,0.05235602094240838
+What drives your passion for this field?,I'm motivated by challenges and the opportunity to grow both personally and professionally.,"I'm driven by a desire to solve complex problems and make a meaningful impact through technology. I believe that innovation and creativity can be powerful tools for driving positive change, and I'm passionate about exploring the frontiers of what's possible with machine learning, AI, and other emerging technologies.
+
+I'm also drawn to the field because it requires collaboration, critical thinking, and problem-solving – skills that I find incredibly rewarding to develop and apply. Whether it's working on a real-time fraud detection system or building an AI-controlled character for a game, I enjoy the challenge of tackling complex problems and finding creative solutions.
+
+Ultimately, my passion for this field stems from a desire to make a difference in people's lives through technology – whether that's improving security, enhancing user experience, or driving innovation.",0,0.003713974244008487,0.10389610389610389,0.013157894736842106,0.09090909090909091,0.09090909090909091
+How do you react to sudden changes in priorities?,"I'm always eager to learn and embrace change as a way to improve. For example, I once had to switch to a new tech stack and picked it up quickly.","I react to sudden changes in priorities by remaining calm, assessing the situation quickly, and prioritizing based on business impact and risk. I make sure to communicate clearly with stakeholders about the new priorities, flagging any risks or concerns that may arise from the change. By doing so, I ensure that everyone is aligned on the new direction and can work together effectively to deliver results.
+
+I also take this opportunity to review our current projects and workflows, identifying areas where adjustments can be made to accommodate the new priorities. This might involve reprioritizing tasks, adjusting timelines, or seeking additional resources if needed.
+
+Ultimately, my goal is to minimize disruption and ensure that we continue to meet our goals while adapting to the changing circumstances. By being proactive, communicative, and flexible, I'm able to navigate sudden changes in priorities effectively and deliver results that meet stakeholder expectations.",0,0.0040176336649894425,0.1340782122905028,0.011299435028248588,0.11173184357541899,0.1340782122905028
+How do you respond when a teammate isn't pulling their weight?,"When faced with conflict, I approach it calmly and try to understand all perspectives before finding a solution together.","I'd address the issue directly and privately with the team member, focusing on the impact of their behavior rather than making a personal attack. I'd clearly explain how their lack of effort is affecting the team's progress and our shared goals. By doing so, I'd make it clear that I value their contributions and want to see them succeed, but also need them to step up their game.
+
+I'd lay out the options and potential consequences of not changing their behavior, while also exploring possible solutions together. This approach helps to ensure we're both on the same page and working towards a mutually beneficial outcome.
+
+Ultimately, my goal is to find a solution that benefits everyone involved, whether it's through additional support, training, or a revised workload. By being open, empathetic, and solution-focused, I believe we can turn things around and get our team back on track.",0,0.0035683197845855653,0.11494252873563215,0.03488372093023256,0.09195402298850573,0.10344827586206896
+Tell me about a time you mentored someone.,"I lead by example and encourage open communication and accountability. One time, I led a team through X and we achieved Y.","I recall a situation where I was tasked with mentoring a junior team member who was struggling to meet their project deadlines. They were taking on additional responsibilities, but lacked experience in prioritizing tasks and managing their time effectively.
+
+To address this, I started by having an open conversation with them about their goals, challenges, and expectations. We set clear objectives for the mentorship period, including regular check-ins and progress reviews.
+
+I then shared my own experiences and strategies for managing projects, emphasizing the importance of prioritization, time management, and communication. I also introduced them to relevant tools and techniques that could help streamline their workflow.
+
+Throughout our sessions, I actively listened to their concerns and provided constructive feedback. We worked together to identify areas where they needed improvement and developed a plan to address these gaps.
+
+One key takeaway from this experience was the importance of empathy and understanding in mentoring. By acknowledging my own limitations and biases, I was able to create a safe and supportive environment for my mentee to learn and grow.
+
+Ultimately, our mentorship program helped my team member develop the skills and confidence they needed to succeed in their role. They were able to meet their project deadlines and take on even more responsibilities, which had a positive impact on the entire team.",0,0.0015453970621356343,0.10743801652892562,0.0,0.08264462809917356,0.10743801652892562
+How do you ensure productivity when working remotely?,I follow a structured workflow and use tools like Jira/Trello/Notion to manage my tasks efficiently.,"To ensure productivity while working remotely, I would focus on creating a structured work environment, establishing clear boundaries, and leveraging technology to stay connected with the team. This includes:
+
+* Setting up a dedicated workspace that is quiet, comfortable, and free from distractions
+* Creating a schedule and sticking to it, including regular check-ins with the team and manager
+* Using project management tools and collaboration software to stay organized and communicate effectively
+* Minimizing social media and email checks during work hours to avoid multitasking and maintain focus
+* Establishing clear expectations for response times and communication channels
+* Staying connected with colleagues through virtual meetings, video conferencing, and instant messaging
+
+By establishing a routine, staying organized, and leveraging technology, I believe it's possible to maintain productivity while working remotely.",0,0.003943767661750804,0.1111111111111111,0.01408450704225352,0.09722222222222222,0.08333333333333333
+How do you stay motivated during repetitive tasks?,I'm motivated by challenges and the opportunity to grow both personally and professionally.,"I'd treat this as a case of balancing competing constraints rather than picking one side outright. I'd address the disagreement directly and privately first, focusing on the shared goal rather than who is right, paying close attention to repetitive tasks since those are the constraints that actually drive the right answer here. Concretely, I'd lay out the options, flag the risks tied to repetitive tasks, and agree with stakeholders on which trade-off we're willing to accept before committing to a plan. Given the nature of repetitive tasks, I'd focus on finding ways to make them more engaging or meaningful, such as adding variety or setting achievable milestones. I'd also prioritize self-care and take regular breaks to maintain productivity and motivation.",0,0.0021021753482337873,0.08450704225352113,0.0,0.07042253521126761,0.07042253521126761
+How do you organize and prioritize your daily tasks?,I follow a structured workflow and use tools like Jira/Trello/Notion to manage my tasks efficiently.,"I prioritize my tasks based on business impact, risk, and urgency. This involves triaging tasks to identify the most critical ones that require immediate attention. I also consider the resources required to complete each task and ensure that they align with our company's goals and objectives.
+
+To organize and prioritize my daily tasks, I follow a structured approach:
+
+1. Identify high-priority tasks: I start by identifying the most critical tasks that need to be completed on a daily basis.
+2. Assess risks and impact: I evaluate the potential risks and impact of each task to determine which ones require immediate attention.
+3. Consider dependencies: I take into account any dependencies between tasks and ensure that they are completed in a logical order.
+4. Allocate resources: I allocate the necessary resources, such as time, personnel, and equipment, to complete each task.
+5. Review and adjust: I regularly review my task list and adjust it as needed to reflect changes in priorities or new information.
+
+By following this structured approach, I am able to prioritize my tasks effectively and ensure that critical work is completed on a timely basis.",0,0.01508521285231019,0.07766990291262135,0.0392156862745098,0.07766990291262135,0.07766990291262135
+What type of company culture do you thrive in?,"I thrive in collaborative, transparent environments where innovation and respect are valued.","I thrive in a company culture that values transparency, open communication, and collaboration. I believe that a culture that encourages feedback, learning from mistakes, and adaptability allows for growth and innovation.
+
+In particular, I thrive in companies that:
+
+* Emphasize continuous learning and professional development
+* Foster a culture of trust and accountability
+* Encourage diverse perspectives and ideas
+* Prioritize clear communication and transparency
+* Celebrate successes and learn from failures
+
+Ultimately, I believe that a company culture that prioritizes these values creates an environment where employees can thrive, grow, and contribute their best work.",0,0.011695159963901962,0.19417475728155342,0.05940594059405941,0.15533980582524273,0.11650485436893204
+How do you handle disagreements within a team?,"I believe communication and mutual respect are key to successful collaboration. In one project, we achieved X because of great teamwork.","I address disagreements directly and privately first, focusing on the shared goal rather than who is right. I lay out the options, flag the risks tied to the specific constraint or issue at hand, and agree with stakeholders on which trade-off we're willing to accept before committing to a plan. The details matter here, so I validate each assumption against real data before moving forward. I close the loop by confirming the outcome met the original goal and capturing any lessons for next time.",0,0.002976434357169453,0.07476635514018691,0.0,0.07476635514018691,0.07476635514018691
+Describe a project where teamwork was essential to success.,"I believe communication and mutual respect are key to successful collaboration. In one project, we achieved X because of great teamwork.","I recall working on a project that required seamless collaboration among multiple teams, including Product Management, QA, and DevOps. Our objective was to develop a new feature for our real-time food ordering system within a tight deadline.
+
+To ensure the project's success, I made it a priority to foster open communication and clear expectations among all stakeholders. We utilized Confluence as our primary collaboration tool to track progress, share knowledge, and align on priorities.
+
+Throughout the project, we encountered several challenges that required us to adapt and adjust our approach. However, by staying focused on our shared goals and actively managing communication, we were able to overcome these obstacles and deliver a high-quality feature on time.
+
+The key to our success was making trade-offs explicit and acting decisively. We identified potential risks and agreed upon mitigation strategies with stakeholders before committing to a plan. This approach allowed us to balance competing constraints and ensure that the final product met both our team's and their expectations.
+
+Ultimately, our collaborative effort resulted in a successful project outcome, demonstrating the importance of teamwork and effective communication in achieving shared goals.",0,0.004066194278403264,0.1220657276995305,0.028436018957345974,0.10328638497652583,0.11267605633802817
+Describe a time you failed and what you learned from it.,"I'm always eager to learn and embrace change as a way to improve. For example, I once had to switch to a new tech stack and picked it up quickly.","I recall a situation where I was tasked with implementing a new feature in our ad serving platform, but unfortunately, I didn't fully test the code before deploying it to production.
+
+The issue became apparent during a critical marketing campaign launch, resulting in significant downtime and revenue loss. Upon reflection, I realized that I had rushed through the testing process and overlooked some crucial checks.
+
+However, instead of dwelling on the failure, I took this as an opportunity to learn from my mistake. I conducted a thorough root-cause analysis with our DevOps team, using tools like New Relic and Dynatrace to identify the exact cause of the issue.
+
+From that experience, I learned the importance of thorough testing and validation before deploying code to production. I also realized the value of collaboration and communication between teams, as well as the need for a blameless root-cause review process to ensure that we can learn from our mistakes without fear of retribution.
+
+I applied these lessons to future projects, prioritizing testing and validation, and establishing clear communication channels with my team and stakeholders. As a result, I've been able to deliver high-quality solutions while minimizing the risk of similar failures in the future.",0,0.00407027251822833,0.1350210970464135,0.025531914893617023,0.08438818565400844,0.1350210970464135
+How do you stay updated with industry trends?,"I'm always eager to learn and embrace change as a way to improve. For example, I once had to switch to a new tech stack and picked it up quickly.","I stay updated with industry trends through various means, including:
+
+* Reading industry publications and blogs
+* Attending conferences and meetups
+* Following thought leaders and influencers on social media
+* Participating in online communities and forums related to my field
+* Staying up-to-date with the latest research and studies in my area of expertise
+
+By staying informed about the latest developments and trends, I can better understand the implications for my work and make more informed decisions.",0,0.00406944714219937,0.1509433962264151,0.0,0.09433962264150943,0.1509433962264151
+What kind of growth opportunities are you looking for?,My long-term goal is to grow into a senior role where I can contribute more strategically and mentor others. This role brings me closer to that.,"I'm looking for growth opportunities that align with our company's goals, values, and existing strengths. This includes expanding into new markets, developing innovative products or services, and building strategic partnerships to drive revenue and customer engagement.
+
+Specifically, I'd be interested in exploring opportunities that leverage our expertise in [industry/field], while also considering the potential for cross-platform growth and scalability. I believe this approach will enable us to capitalize on emerging trends and technologies, while minimizing risks and ensuring a strong foundation for long-term success.
+
+Ultimately, my goal is to identify opportunities that drive business impact, improve customer satisfaction, and position our company for continued growth and success in the market.",0,0.012273865804857315,0.1958041958041958,0.0425531914893617,0.0979020979020979,0.18181818181818182

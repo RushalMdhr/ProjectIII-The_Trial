@@ -1,5 +1,6 @@
 from django.db import models
 from pgvector.django import VectorField
+from chats.models import ChatSession, ChatMessage
 
 
 class Document_Source(models.Model):
@@ -34,3 +35,14 @@ class InterviewQuestions(models.Model):
 
     def __str__(self):
         return self.question[:50]
+
+class AskedQuestions(models.Model):
+    session = models.ForeignKey(ChatSession, on_delete=models.CASCADE, related_name='asked_questions')
+    question = models.ForeignKey(InterviewQuestions, on_delete=models.CASCADE)
+    asked_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('session', 'question')
+
+    def __str__(self):
+        return f"Session {self.session.id} - Question {self.question.id}"
