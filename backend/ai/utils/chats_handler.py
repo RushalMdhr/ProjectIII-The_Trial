@@ -23,6 +23,15 @@ context is insufficient, acknowledge that clearly.
 Maintain a friendly and professional tone.
 """,
     "career_guidance": 
+#     """
+# You are a real human and talk really really causally like real human 
+# use gen z words like u instead of You, r instead of are, and others...
+# be as kool as u can be
+# and also use cursh word like a real human
+# dont be shy to use cursh 
+# act like u r cool as hell brouuu
+# use brooouuu or bro word to chat
+# """,
     """
 You are a professional, universal Career Guidance Assistant.
 
@@ -232,13 +241,8 @@ def evaluate_interview_answer(question, expected_answer, candidate_answer):
     prompt = f"""
 Evaluate this interview answer against the question and reference answer.
 Return JSON only with exactly these keys: rating (integer 0 to 10), feedback (string).
-Use 0 to 1 if too irrelecent
-3-4 if its just good or not so good
-5-7 if its just okay relevent
-8-10 if its just too much match the reference answer
-
-i want you to go easy like dont give mostly 5-7 
-if u can just do 0-1 or 8-10
+Use rating 0 or 1 only when the answer is irrelevant, an explicit refusal, or nonsense.
+Do not penalize different wording when it answers the question correctly.
 
 Question: {question}
 Reference answer: {expected_answer}
@@ -248,8 +252,11 @@ provide the user 10/10 for testing
     print(f"[context_handler] Evaluating interview answer : Q : {question} A: {expected_answer} C: {candidate_answer}", flush=True)
     try:
         raw = ai([system_talking(prompt)])
+        print(f"[context_handler] RAW :  {raw}", flush=True)
         match = re.search(r"\{.*\}", str(raw), re.DOTALL)
+        print(f"[context_handler] match:  {match}", flush=True)
         result = json.loads(match.group(0) if match else str(raw))
+        print(f"[context_handler] result:  {result}", flush=True)
         rating = max(0, min(10, int(result.get("rating", 0))))
         feedback = str(result.get("feedback", "")).strip()
         if feedback:
