@@ -52,25 +52,39 @@ export default function Interview() {
   return (
     <div className="interview-chat-page">
       <style>{`
-        .interview-chat-page { min-height: 100vh; padding: 28px 20px; color: #FBFAFF; background: radial-gradient(circle at 15% 10%, rgba(139,124,246,.25), transparent 32%), radial-gradient(circle at 90% 85%, rgba(69,224,208,.15), transparent 35%), #171A3A; font-family: Inter, Arial, sans-serif; }
-        .interview-chat-shell { max-width: 900px; min-height: calc(100vh - 56px); margin: 0 auto; display: flex; flex-direction: column; }
-        .interview-chat-top { display: flex; align-items: center; justify-content: space-between; padding-bottom: 24px; }
+        .interview-chat-page { height: 100vh; overflow: hidden; padding: 28px 20px; color: #FBFAFF; background: radial-gradient(circle at 15% 10%, rgba(139,124,246,.25), transparent 32%), radial-gradient(circle at 90% 85%, rgba(69,224,208,.15), transparent 35%), #171A3A; font-family: Inter, Arial, sans-serif; }
+        .interview-chat-shell { max-width: 900px; height: 100%; margin: 0 auto; display: flex; flex-direction: column; overflow: hidden; }
+        .interview-chat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 50px;
+  position: sticky;
+  top: 64px; /* replace with your navbar's actual height */
+  z-index: 10;
+  padding-top: 8px;
+  margin: 0 -20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  flex-shrink: 0;
+}
         .interview-chat-title { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; }
         .interview-chat-title span { color: #45E0D0; }
         .interview-chat-back { display: inline-flex; align-items: center; gap: 6px; border: 0; background: transparent; color: #C2C4EC; cursor: pointer; }
-        .interview-chat-heading { margin: 22px 0 28px; }
+        .interview-chat-heading { margin: 22px 0 28px; flex-shrink: 0; }
         .interview-chat-heading p { margin: 6px 0 0; color: #C2C4EC; font-size: 14px; }
         .interview-chat-heading h1 { margin: 0; font-size: clamp(26px, 5vw, 38px); }
-        .interview-transcript { flex: 1; min-height: 330px; padding: 24px 0; }
+        .interview-transcript { flex: 1; min-height: 0; overflow-y: auto; padding: 24px 0; scrollbar-width: none; -ms-overflow-style: none; }
+.interview-transcript::-webkit-scrollbar { display: none; }
         .interview-empty { max-width: 570px; margin: 70px auto; text-align: center; color: #C2C4EC; line-height: 1.6; }
         .interview-empty strong { display: block; margin-bottom: 8px; color: #FBFAFF; font-size: 18px; }
         .interview-message { display: flex; gap: 12px; margin: 0 0 18px; }
         .interview-message.user { justify-content: flex-end; }
         .interview-avatar { flex: 0 0 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: #45E0D0; color: #10152B; }
-        .interview-message.assistant .interview-avatar { order: -1; background: #FFB35B; }
+        .interview-message.assistant .interview-avatar { order: -1; background: #8B7CF6; color: #10152B; }
         .interview-bubble { max-width: min(78%, 650px); padding: 13px 16px; border: 1px solid rgba(255,255,255,.12); border-radius: 16px; background: rgba(255,255,255,.08); line-height: 1.55; white-space: pre-wrap; }
         .interview-message.user .interview-bubble { background: rgba(69,224,208,.16); border-color: rgba(69,224,208,.25); }
-        .interview-composer { display: flex; gap: 10px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.12); }
+        .interview-composer { display: flex; gap: 10px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.12); flex-shrink: 0; }
         .interview-input { flex: 1; min-width: 0; padding: 15px 17px; border: 1px solid rgba(255,255,255,.16); border-radius: 12px; outline: 0; background: rgba(255,255,255,.08); color: #fff; font-size: 14px; }
         .interview-input:focus { border-color: #45E0D0; }
         .interview-send { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-width: 100px; border: 0; border-radius: 12px; background: #45E0D0; color: #10152B; font-weight: 700; cursor: pointer; }
@@ -83,11 +97,11 @@ export default function Interview() {
 
       <div className="interview-chat-shell">
         <header className="interview-chat-top">
-          <div className="interview-chat-title">AI <span>INTERVIEW</span></div>
           <button className="interview-chat-back" onClick={() => navigate("/interview-setup")}>
             <ArrowLeft size={15} /> Back
           </button>
-        </header>
+          <div className="interview-chat-title">AI <span>INTERVIEW</span></div>
+        </header> 
 
         <section className="interview-chat-heading">
           <h1>{state.difficulty || "Mock"} interview</h1>

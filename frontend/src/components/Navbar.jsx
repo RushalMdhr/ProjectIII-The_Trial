@@ -115,6 +115,14 @@ export default function Navbar() {
         justifyContent: "space-between",
         padding: "22px 48px",
         width: "100%",
+        boxSizing: "border-box",
+
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
+
+        background: "#191C36",
+        borderBottom: "1px solid rgba(255,255,255,0.08)",
       }}
     >
       {/* LOGO */}
